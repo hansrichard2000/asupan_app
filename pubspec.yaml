@@ -51,8 +51,9 @@ flutter:
   assets:
     - assets/images/logoasupan.png
     - assets/images/texture1.png
-    - assets/images/texture2.png
+    - assets/images/texture4.png
     - assets/images/texture3.png
+    - assets/images/texture2.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

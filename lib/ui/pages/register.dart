@@ -188,7 +188,7 @@ class _RegisterState extends State<Register> {
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
                                   Navigator.pushReplacementNamed(
-                                      context, Register.routeName);
+                                      context, Datajk.routeName);
                                 } else {
                                   Fluttertoast.showToast(
                                       msg: "Masih ada data yang kosong!");
@@ -215,7 +215,7 @@ class _RegisterState extends State<Register> {
                             GestureDetector(
                               onTap: () {
                                 Navigator.pushReplacementNamed(
-                                    context, Datajk.routeName);
+                                    context, Login.routeName);
                               },
                               child: Text(
                                 "Sudah terdaftar? Masuk.",

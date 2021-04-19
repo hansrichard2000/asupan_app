@@ -4,8 +4,8 @@ class MyTheme {
   static ThemeData lightTheme() {
     return ThemeData(
       primarySwatch: Colors.blue,
-      backgroundColor: Colors.white,
-      scaffoldBackgroundColor: Colors.white,
+      backgroundColor: Color(0xFF0057FF),
+      scaffoldBackgroundColor: Color(0xFF0057FF),
       primaryColor: Color(0xFF0057FF),
       accentColor: Color(0xFF2F80ED),
       visualDensity: VisualDensity.adaptivePlatformDensity,
