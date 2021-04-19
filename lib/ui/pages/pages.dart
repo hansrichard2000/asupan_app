@@ -10,3 +10,5 @@ part 'login.dart';
 part 'register.dart';
 part 'beranda.dart';
 part 'datajk.dart';
+part 'databerat.dart';
+part 'datatinggi.dart';

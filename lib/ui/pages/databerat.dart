@@ -1,12 +1,12 @@
 part of 'pages.dart';
 
-class Datajk extends StatefulWidget {
-  static const String routeName = "/datajk";
+class Databerat extends StatefulWidget {
+  static const String routeName = "/databerat";
   @override
-  _DatajkState createState() => _DatajkState();
+  _DataberatState createState() => _DataberatState();
 }
 
-class _DatajkState extends State<Datajk> {
+class _DataberatState extends State<Databerat> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -107,7 +107,7 @@ class _DatajkState extends State<Datajk> {
                     height: 30,
                   ),
                   Container(
-                      child: Text("Jenis Kelamin",
+                      child: Text("Berat Anda",
                           style: TextStyle(fontSize: 36, color: Colors.white)))
                 ],
               ),
