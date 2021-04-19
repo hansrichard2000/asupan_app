@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         Frontpage.routeName: (context) => Frontpage(),
         Login.routeName: (context) => Login(),
         Register.routeName: (context) => Register(),
+        Datajk.routeName: (context) => Datajk(),
         Beranda.routeName: (context) => Beranda(),
       },
     );

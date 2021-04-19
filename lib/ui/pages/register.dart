@@ -215,7 +215,7 @@ class _RegisterState extends State<Register> {
                             GestureDetector(
                               onTap: () {
                                 Navigator.pushReplacementNamed(
-                                    context, Login.routeName);
+                                    context, Datajk.routeName);
                               },
                               child: Text(
                                 "Sudah terdaftar? Masuk.",
