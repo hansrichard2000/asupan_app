@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "631294616477",
+    "project_id": "asupan-app",
+    "storage_bucket": "asupan-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631294616477:android:5d5a0baa4403be67824574",
+        "android_client_info": {
+          "package_name": "com.example.asupan_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "631294616477-3hja1c11vqogj0g3653rho6fb8gk7ddl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.asupan_app",
+            "certificate_hash": "7190050bfe7b2be054454ad4752b79818ead2ee2"
+          }
+        },
+        {
+          "client_id": "631294616477-771361d27h4hd8m5i73eqrgf64db0nqf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6F1BJel8HrKZscvhDGen4RM0d2r-kJl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "631294616477-771361d27h4hd8m5i73eqrgf64db0nqf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
