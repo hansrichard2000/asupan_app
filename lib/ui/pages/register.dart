@@ -13,6 +13,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _ctrlPassword = TextEditingController();
   final TextEditingController _ctrlConfirmPassword = TextEditingController();
   bool isVisible = true;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -185,10 +186,30 @@ class _RegisterState extends State<Register> {
                               height: 24,
                             ),
                             ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState.validate()) {
-                                  Navigator.pushReplacementNamed(
-                                      context, Datajk.routeName);
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  Users users = new Users(
+                                      "",
+                                      ctrlName.text,
+                                      ctrlEmail.text,
+                                      _ctrlPassword.text,
+                                      _ctrlConfirmPassword.text,
+                                      "",
+                                      "");
+                                  String msg = await AuthServices.signUp(users);
+                                  if (msg == "success") {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    ActivityServices.showToast(
+                                        "Register Success",
+                                        Colors.blueAccent[700]);
+                                    Navigator.pushReplacementNamed(
+                                        context, Beranda.routeName);
+                                  }
                                 } else {
                                   Fluttertoast.showToast(
                                       msg: "Masih ada data yang kosong!");
@@ -232,6 +253,7 @@ class _RegisterState extends State<Register> {
                 ],
               ),
             ),
+            isLoading == true ? ActivityServices.loadings() : Container()
           ],
         ),
       ),

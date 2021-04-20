@@ -136,10 +136,18 @@ class _LoginState extends State<Login> {
                             Container(
                               margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
                               child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   if (_formKey.currentState.validate()) {
-                                    Navigator.pushReplacementNamed(
-                                        context, Beranda.routeName);
+                                    String msg = await AuthServices.signIn(
+                                        ctrlEmail.text, ctrlPassword.text);
+                                    if (msg == "success") {
+                                      Navigator.pushReplacementNamed(
+                                          context, Beranda.routeName);
+                                    } else if (msg != "success") {
+                                      Fluttertoast.showToast(
+                                          msg: "email atau password salah",
+                                          backgroundColor: Colors.red);
+                                    }
                                   } else {
                                     Fluttertoast.showToast(
                                         msg:

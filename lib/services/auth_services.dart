@@ -45,8 +45,8 @@ class AuthServices {
     String uid;
     String msg;
 
-    UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-        email: email, password: password);
+    UserCredential userCredential =
+        await auth.signInWithEmailAndPassword(email: email, password: password);
 
     uid = userCredential.user.uid;
 
