@@ -208,7 +208,7 @@ class _RegisterState extends State<Register> {
                                         "Register Success",
                                         Colors.blueAccent[700]);
                                     Navigator.pushReplacementNamed(
-                                        context, Beranda.routeName);
+                                        context, Login.routeName);
                                   }
                                 } else {
                                   Fluttertoast.showToast(
