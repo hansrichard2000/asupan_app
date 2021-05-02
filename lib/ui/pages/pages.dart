@@ -6,11 +6,17 @@ import 'package:asupan_app/ui/widgets/widgets.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:logger/logger.dart';
 
 part 'frontpage.dart';
 part 'login.dart';
 part 'register.dart';
+part 'mainmenu.dart';
 part 'beranda.dart';
 part 'datajk.dart';
 part 'databerat.dart';
 part 'datatinggi.dart';
+part 'riwayat.dart';
+part 'alarm.dart';
+part 'profil.dart';
+part 'harian.dart';

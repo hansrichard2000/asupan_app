@@ -10,7 +10,9 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final ctrlEmail = TextEditingController();
   final ctrlPassword = TextEditingController();
+  final log = Logger();
   bool isVisible = true;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -137,16 +139,31 @@ class _LoginState extends State<Login> {
                               margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
                               child: ElevatedButton(
                                 onPressed: () async {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  String msg;
                                   if (_formKey.currentState.validate()) {
-                                    String msg = await AuthServices.signIn(
-                                        ctrlEmail.text, ctrlPassword.text);
-                                    if (msg == "success") {
-                                      Navigator.pushReplacementNamed(
-                                          context, Beranda.routeName);
-                                    } else if (msg != "success") {
-                                      Fluttertoast.showToast(
-                                          msg: "email atau password salah",
-                                          backgroundColor: Colors.red);
+                                    try {
+                                      msg = await AuthServices.signIn(
+                                          ctrlEmail.text, ctrlPassword.text);
+                                      if (msg == "success") {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        ActivityServices.showToast(
+                                            "Berhasil Masuk",
+                                            Colors.blueAccent[700]);
+                                        Navigator.pushReplacementNamed(
+                                            context, MainMenu.routeName);
+                                      }
+                                    } catch (msg) {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      ActivityServices.showToast(
+                                          "Email atau Password salah",
+                                          Colors.red);
                                     }
                                   } else {
                                     Fluttertoast.showToast(
@@ -202,6 +219,7 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
+            isLoading == true ? ActivityServices.loadings() : Container()
           ],
         ),
         // ],

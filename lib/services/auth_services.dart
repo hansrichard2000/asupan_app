@@ -44,14 +44,16 @@ class AuthServices {
     String dateNow = ActivityServices.dateNow();
     String uid;
     String msg;
+    String token;
 
     UserCredential userCredential =
         await auth.signInWithEmailAndPassword(email: email, password: password);
 
     uid = userCredential.user.uid;
 
-    await userCollection.doc(uid).set({
+    await userCollection.doc(uid).update({
       'isOn': '1',
+      'token': token,
       'updatedAt': dateNow,
     }).then((value) {
       msg = "success";
@@ -70,6 +72,7 @@ class AuthServices {
     await auth.signOut().whenComplete(() {
       userCollection.doc(uid).update({
         'isOn': '0',
+        'token': '-',
         'updatedAt': dateNow,
       });
     });

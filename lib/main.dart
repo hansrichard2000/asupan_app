@@ -22,7 +22,12 @@ class MyApp extends StatelessWidget {
         Datajk.routeName: (context) => Datajk(),
         Datatinggi.routeName: (context) => Datatinggi(),
         Databerat.routeName: (context) => Databerat(),
+        MainMenu.routeName: (context) => MainMenu(),
         Beranda.routeName: (context) => Beranda(),
+        Riwayat.routeName: (context) => Riwayat(),
+        Alarm.routeName: (context) => Alarm(),
+        Profil.routeName: (context) => Profil(),
+        Harian.routeName: (context) => Harian(),
       },
     );
   }
