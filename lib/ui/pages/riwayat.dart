@@ -17,7 +17,10 @@ class _RiwayatState extends State<Riwayat> {
           title: Text(
             "Statistik Minum",
             style: TextStyle(
-                fontFamily: "Sansation", fontSize: 30, color: Colors.black),
+              fontFamily: "Sansation",
+              fontSize: 30,
+              color: Colors.black,
+            ),
           ),
           elevation: 0,
         ),
@@ -108,7 +111,10 @@ class _RiwayatState extends State<Riwayat> {
                                   size.width / 3, 10, 10, 10),
                               alignment: Alignment.topRight,
                               child: ElevatedButton.icon(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, Harian.routeName);
+                                },
                                 icon: Icon(
                                   Icons.calendar_today_outlined,
                                   color: Color(0xFF0057FF),
