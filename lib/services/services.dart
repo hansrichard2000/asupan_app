@@ -10,3 +10,5 @@ import 'package:intl/intl.dart';
 
 part 'auth_services.dart';
 part 'activity_services.dart';
+part 'stats_services.dart';
+part 'asupan_services.dart';

@@ -7,9 +7,16 @@ class Databerat extends StatefulWidget {
 }
 
 class _DataberatState extends State<Databerat> {
+  final _formKey = GlobalKey<FormState>();
+  final ctrlBerat = TextEditingController();
+  final ctrlTinggi = TextEditingController();
+  final ctrlUsia = TextEditingController();
+  bool isVisible = true;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final buttonSize = size.width / 5;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -67,7 +74,7 @@ class _DataberatState extends State<Databerat> {
                         child: Container(
                           padding: EdgeInsets.all(1),
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Color(0xFF0057FF),
                               border: Border.all(color: Colors.white, width: 3),
                               borderRadius: BorderRadius.circular(10)),
                           width: 80,
@@ -104,11 +111,183 @@ class _DataberatState extends State<Databerat> {
                     ],
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   Container(
-                      child: Text("Berat Anda",
-                          style: TextStyle(fontSize: 36, color: Colors.white)))
+                      child: Text("Data Tubuh Anda",
+                          style: TextStyle(fontSize: 24, color: Colors.white))),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(32),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            style: TextStyle(color: Colors.white),
+                            controller: ctrlBerat,
+                            cursorColor: Colors.white,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                labelText: "Berat Anda",
+                                labelStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 2))),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "Wajib diisi";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          TextFormField(
+                            controller: ctrlTinggi,
+                            style: TextStyle(color: Colors.white),
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                labelText: "Tinggi Anda",
+                                labelStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 2))),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "Wajib diisi";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          TextFormField(
+                            controller: ctrlUsia,
+                            style: TextStyle(color: Colors.white),
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                labelText: "Usia Anda",
+                                labelStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                border: OutlineInputBorder(),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Colors.white,
+                                )),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 2))),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "Wajib diisi";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text(
+                        "SIMPAN",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: "Sansation",
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF0057FF),
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          primary: Colors.white,
+                          elevation: 4,
+                          padding: EdgeInsets.fromLTRB(70, 5, 70, 5)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        ClipOval(
+                          child: Material(
+                            color: Colors.white, // button color
+                            child: InkWell(
+                              child: SizedBox(
+                                  width: size.width / 5,
+                                  height: size.height / 8.5,
+                                  child: Icon(
+                                    Icons.arrow_left,
+                                    size: buttonSize,
+                                  )),
+                              onTap: () {
+                                Navigator.pushReplacementNamed(
+                                    context, Datajk.routeName);
+                              },
+                            ),
+                          ),
+                        ),
+                        ClipOval(
+                          child: Material(
+                            color: Colors.white, // button color
+                            child: InkWell(
+                              splashColor:
+                                  Colors.blueAccent[700], // inkwell color
+                              child: SizedBox(
+                                  width: size.width / 5,
+                                  height: size.height / 8.5,
+                                  child: Icon(
+                                    Icons.arrow_right,
+                                    size: buttonSize,
+                                  )),
+                              onTap: () {
+                                Navigator.pushReplacementNamed(
+                                    context, Datatinggi.routeName);
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
