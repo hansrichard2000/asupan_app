@@ -280,7 +280,7 @@ class _DataberatState extends State<Databerat> {
                                   )),
                               onTap: () {
                                 Navigator.pushReplacementNamed(
-                                    context, Datatinggi.routeName);
+                                    context, Bangun.routeName);
                               },
                             ),
                           ),

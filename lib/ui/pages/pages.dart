@@ -18,7 +18,6 @@ part 'datajk.dart';
 part 'databerat.dart';
 part 'bangun.dart';
 part 'tidur.dart';
-part 'datatinggi.dart';
 part 'riwayat.dart';
 part 'alarm.dart';
 part 'profil.dart';
