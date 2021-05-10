@@ -10,6 +10,7 @@ class _DatajkState extends State<Datajk> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final buttonSize = size.width / 5;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -108,7 +109,51 @@ class _DatajkState extends State<Datajk> {
                   ),
                   Container(
                       child: Text("Jenis Kelamin",
-                          style: TextStyle(fontSize: 36, color: Colors.white)))
+                          style: TextStyle(fontSize: 36, color: Colors.white))),
+                  SizedBox(
+                    height: 60,
+                  ),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        ClipOval(
+                          child: Material(
+                            color: Colors.white, // button color
+                            child: InkWell(
+                              splashColor:
+                                  Colors.blueAccent[700], // inkwell color
+                              child: SizedBox(
+                                  width: size.width / 4,
+                                  height: size.height / 6.5,
+                                  child: Icon(
+                                    MdiIcons.humanMale,
+                                    size: buttonSize,
+                                  )),
+                              onTap: () {},
+                            ),
+                          ),
+                        ),
+                        ClipOval(
+                          child: Material(
+                            color: Colors.white, // button color
+                            child: InkWell(
+                              splashColor:
+                                  Colors.blueAccent[700], // inkwell color
+                              child: SizedBox(
+                                  width: size.width / 4,
+                                  height: size.height / 6.5,
+                                  child: Icon(
+                                    MdiIcons.humanFemale,
+                                    size: buttonSize,
+                                  )),
+                              onTap: () {},
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
