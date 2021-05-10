@@ -4,9 +4,9 @@ class Stats extends Equatable {
   final String userid;
   final String addby;
   final String jenisKelamin;
-  final int berat;
-  final int tinggi;
-  final int usia;
+  final String berat;
+  final String tinggi;
+  final String usia;
   final String asupan;
   final String waktuBangun;
   final String waktuTidur;

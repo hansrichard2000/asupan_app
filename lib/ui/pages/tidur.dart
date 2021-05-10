@@ -108,7 +108,7 @@ class _TidurState extends State<Tidur> {
                     height: 30,
                   ),
                   Container(
-                      child: Text("Tinggi Anda",
+                      child: Text("Waktu Tidur Anda",
                           style: TextStyle(fontSize: 36, color: Colors.white))),
                   SizedBox(
                     height: 35,

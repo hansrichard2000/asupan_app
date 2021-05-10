@@ -7,10 +7,13 @@ class Bangun extends StatefulWidget {
 }
 
 class _BangunState extends State<Bangun> {
+  DateTime dateTime = DateTime.now();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final buttonSize = size.width / 5;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -115,7 +118,39 @@ class _BangunState extends State<Bangun> {
                   ),
                   TimePicker(),
                   SizedBox(
-                    height: size.height / 7,
+                    height: 20,
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        // final value = DateFormat('HH:mm').format(dateTime);
+                        Stats stats = Stats(
+                            "", "", "", "", "", "", "", "", "", "", "", "");
+                      },
+                      child: Text(
+                        "SIMPAN",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: "Sansation",
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF0057FF),
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          primary: Colors.white,
+                          elevation: 4,
+                          padding: EdgeInsets.fromLTRB(70, 5, 70, 5)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 24,
                   ),
                   Center(
                     child: Row(
@@ -165,6 +200,7 @@ class _BangunState extends State<Bangun> {
                 ],
               ),
             ),
+            isLoading == true ? ActivityServices.loadings() : Container()
           ],
         ),
       ),

@@ -11,6 +11,8 @@ class _DatajkState extends State<Datajk> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final buttonSize = size.width / 5;
+    bool buttonMale = false;
+    bool buttonFemale = false;
     bool male = false;
     bool female = false;
     bool isVisible = true;
@@ -123,10 +125,42 @@ class _DatajkState extends State<Datajk> {
                       children: <Widget>[
                         ClipOval(
                           child: Material(
-                            color: Colors.white, // button color
+                            color: buttonMale
+                                ? Colors.blue[700]
+                                : Colors.white, // button color
                             child: InkWell(
-                              splashColor:
-                                  Colors.blueAccent[700], // inkwell color
+                              onTap: () async {
+                                setState(() {
+                                  male = true;
+                                  female = false;
+                                  isLoading = true;
+                                  buttonMale = true;
+                                  buttonFemale = false;
+                                });
+                                Stats stats = Stats(
+                                  "",
+                                  FirebaseAuth.instance.currentUser.uid,
+                                  "L",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                );
+                                await StatsServices.addJenisKelamin(stats).then(
+                                    (value) => ActivityServices.showToast(
+                                        "Laki-Laki", Colors.blueAccent[700]));
+                                // isLoading = false;Z
+                                Navigator.pushReplacementNamed(
+                                    context, Databerat.routeName);
+                              },
+                              splashColor: buttonMale
+                                  ? Colors.white
+                                  : Colors.blue[700], // inkwell color
                               child: SizedBox(
                                   width: size.width / 4,
                                   height: size.height / 6.5,
@@ -134,19 +168,18 @@ class _DatajkState extends State<Datajk> {
                                     MdiIcons.humanMale,
                                     size: buttonSize,
                                   )),
-                              onTap: () {
-                                Navigator.pushReplacementNamed(
-                                    context, Databerat.routeName);
-                              },
                             ),
                           ),
                         ),
                         ClipOval(
                           child: Material(
-                            color: Colors.white, // button color
+                            color: buttonFemale
+                                ? Colors.red[200]
+                                : Colors.white, // button color
                             child: InkWell(
-                              splashColor:
-                                  Colors.blueAccent[700], // inkwell color
+                              splashColor: buttonFemale
+                                  ? Colors.white
+                                  : Colors.red[200], // inkwell color
                               child: SizedBox(
                                   width: size.width / 4,
                                   height: size.height / 6.5,
@@ -154,7 +187,30 @@ class _DatajkState extends State<Datajk> {
                                     MdiIcons.humanFemale,
                                     size: buttonSize,
                                   )),
-                              onTap: () {
+                              onTap: () async {
+                                setState(() {
+                                  male = false;
+                                  female = true;
+                                  buttonFemale = true;
+                                  buttonMale = false;
+                                });
+                                Stats stats = Stats(
+                                  "",
+                                  FirebaseAuth.instance.currentUser.uid,
+                                  "P",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                );
+                                await StatsServices.addJenisKelamin(stats).then(
+                                    (value) => ActivityServices.showToast(
+                                        "Perempuan", Colors.red[200]));
                                 Navigator.pushReplacementNamed(
                                     context, Databerat.routeName);
                               },
@@ -212,6 +268,7 @@ class _DatajkState extends State<Datajk> {
                 ],
               ),
             ),
+            isLoading == true ? ActivityServices.loadings() : Container()
           ],
         ),
       ),

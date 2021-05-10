@@ -131,7 +131,7 @@ class _DataberatState extends State<Databerat> {
                             cursorColor: Colors.white,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                labelText: "Berat Anda",
+                                labelText: "Berat Anda (kg)",
                                 labelStyle: TextStyle(
                                   color: Colors.white,
                                 ),
@@ -160,7 +160,7 @@ class _DataberatState extends State<Databerat> {
                             style: TextStyle(color: Colors.white),
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                labelText: "Tinggi Anda",
+                                labelText: "Tinggi Anda (cm)",
                                 labelStyle: TextStyle(
                                   color: Colors.white,
                                 ),
@@ -221,7 +221,40 @@ class _DataberatState extends State<Databerat> {
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          Stats stats = Stats(
+                            "",
+                            FirebaseAuth.instance.currentUser.uid,
+                            "",
+                            ctrlBerat.text,
+                            ctrlTinggi.text,
+                            ctrlUsia.text,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                          );
+                          await StatsServices.addDataTubuh(stats).then(
+                              (value) => ActivityServices.showToast(
+                                  "Berhasil Disimpan", Colors.green));
+                          isLoading = false;
+                          Navigator.pushReplacementNamed(
+                              context, Bangun.routeName);
+                        } else {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Fluttertoast.showToast(
+                              msg: "Isian masih ada yang kosong",
+                              backgroundColor: Colors.red);
+                        }
+                      },
                       child: Text(
                         "SIMPAN",
                         textAlign: TextAlign.center,
@@ -291,6 +324,7 @@ class _DataberatState extends State<Databerat> {
                 ],
               ),
             ),
+            isLoading == true ? ActivityServices.loadings() : Container()
           ],
         ),
       ),

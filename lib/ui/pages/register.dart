@@ -207,8 +207,15 @@ class _RegisterState extends State<Register> {
                                     ActivityServices.showToast(
                                         "Register Success",
                                         Colors.blueAccent[700]);
-                                    Navigator.pushReplacementNamed(
-                                        context, Login.routeName);
+                                    String msg2 = await AuthServices.signIn(
+                                        ctrlEmail.text, _ctrlPassword.text);
+                                    if (msg2 == "success") {
+                                      Navigator.pushReplacementNamed(
+                                          context, Datajk.routeName);
+                                    } else {
+                                      ActivityServices.showToast(
+                                          "Login Failed", Colors.red);
+                                    }
                                   }
                                 } else {
                                   Fluttertoast.showToast(
