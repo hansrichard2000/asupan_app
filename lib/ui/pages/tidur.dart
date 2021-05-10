@@ -10,6 +10,7 @@ class _TidurState extends State<Tidur> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final buttonSize = size.width / 5;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -108,7 +109,59 @@ class _TidurState extends State<Tidur> {
                   ),
                   Container(
                       child: Text("Tinggi Anda",
-                          style: TextStyle(fontSize: 36, color: Colors.white)))
+                          style: TextStyle(fontSize: 36, color: Colors.white))),
+                  SizedBox(
+                    height: 35,
+                  ),
+                  TimePicker(),
+                  SizedBox(
+                    height: size.height / 7,
+                  ),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        ClipOval(
+                          child: Material(
+                            color: Colors.white, // button color
+                            child: InkWell(
+                              child: SizedBox(
+                                  width: size.width / 5,
+                                  height: size.height / 8.5,
+                                  child: Icon(
+                                    Icons.arrow_left,
+                                    size: buttonSize,
+                                  )),
+                              onTap: () {
+                                Navigator.pushReplacementNamed(
+                                    context, Bangun.routeName);
+                              },
+                            ),
+                          ),
+                        ),
+                        ClipOval(
+                          child: Material(
+                            color: Colors.white, // button color
+                            child: InkWell(
+                              splashColor:
+                                  Colors.blueAccent[700], // inkwell color
+                              child: SizedBox(
+                                  width: size.width / 5,
+                                  height: size.height / 8.5,
+                                  child: Icon(
+                                    Icons.arrow_right,
+                                    size: buttonSize,
+                                  )),
+                              onTap: () {
+                                Navigator.pushReplacementNamed(
+                                    context, Login.routeName);
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
