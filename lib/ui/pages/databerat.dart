@@ -158,6 +158,7 @@ class _DataberatState extends State<Databerat> {
                           TextFormField(
                             controller: ctrlTinggi,
                             style: TextStyle(color: Colors.white),
+                            cursorColor: Colors.white,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 labelText: "Tinggi Anda (cm)",
@@ -186,6 +187,7 @@ class _DataberatState extends State<Databerat> {
                           ),
                           TextFormField(
                             controller: ctrlUsia,
+                            cursorColor: Colors.white,
                             style: TextStyle(color: Colors.white),
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(

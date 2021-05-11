@@ -7,6 +7,41 @@ class Tidur extends StatefulWidget {
 }
 
 class _TidurState extends State<Tidur> {
+  DateTime dateTime = DateTime.now();
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    dateTime = getDateTime();
+  }
+
+  DateTime getDateTime() {
+    final now = DateTime.now();
+
+    return DateTime(now.year, now.month, now.day, now.hour, 0);
+  }
+
+  Widget buildTimePicker() => SizedBox(
+        height: 180,
+        child: CupertinoTheme(
+          data: CupertinoThemeData(
+            textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle: TextStyle(fontSize: 30)),
+            brightness: Brightness.dark,
+            primaryContrastingColor: Colors.white,
+            barBackgroundColor: Colors.white,
+          ),
+          child: CupertinoDatePicker(
+            initialDateTime: dateTime,
+            mode: CupertinoDatePickerMode.time,
+            minuteInterval: 10,
+            //use24hFormat: true,
+            onDateTimeChanged: (dateTime) =>
+                setState(() => this.dateTime = dateTime),
+          ),
+        ),
+      );
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -113,9 +148,57 @@ class _TidurState extends State<Tidur> {
                   SizedBox(
                     height: 35,
                   ),
-                  TimePicker(),
+                  buildTimePicker(),
                   SizedBox(
-                    height: size.height / 7,
+                    height: 20,
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        final tidur = DateFormat('HH:mm').format(dateTime);
+                        Stats stats = Stats(
+                          "",
+                          "",
+                          "",
+                          "",
+                          "",
+                          "",
+                          "",
+                          "",
+                          tidur,
+                          "",
+                          "",
+                          "",
+                        );
+                        await StatsServices.AddWaktuTidur(stats).then((value) =>
+                            ActivityServices.showToast(tidur, Colors.green));
+                        Navigator.pushReplacementNamed(
+                            context, MainMenu.routeName);
+                      },
+                      child: Text(
+                        "SIMPAN",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: "Sansation",
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF0057FF),
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          primary: Colors.white,
+                          elevation: 4,
+                          padding: EdgeInsets.fromLTRB(70, 5, 70, 5)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 24,
                   ),
                   Center(
                     child: Row(
@@ -165,6 +248,7 @@ class _TidurState extends State<Tidur> {
                 ],
               ),
             ),
+            isLoading == true ? ActivityServices.loadings() : Container()
           ],
         ),
       ),

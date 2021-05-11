@@ -37,6 +37,7 @@ class StatsServices {
     String dateNow = ActivityServices.dateNow();
 
     await productCollection.doc(statsDocument.id).update({
+      'statsId': statsDocument.id,
       'berat': stats.berat,
       'tinggi': stats.tinggi,
       'usia': stats.usia,

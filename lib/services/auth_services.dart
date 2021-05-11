@@ -79,4 +79,17 @@ class AuthServices {
 
     return true;
   }
+
+  // getUsersName() async {
+  //   await Firebase.initializeApp();
+  //   String uid = auth.currentUser.uid;
+  //   userCollection.doc(uid).set('data')
+  // }
+
+//   static Future getUsersName() async{
+//     var document = await FirebaseFirestore.instance.collection('users').doc(auth.currentUser.uid);
+// document.get() => then(function(document) {
+//     print(document("name"));
+// });
+//   }
 }

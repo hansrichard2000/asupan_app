@@ -8,11 +8,12 @@ class TimePicker extends StatefulWidget {
 
 class _TimePickerState extends State<TimePicker> {
   DateTime dateTime = DateTime.now();
-
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
     dateTime = getDateTime();
+    // return dateTime;
   }
 
   @override
@@ -28,8 +29,27 @@ class _TimePickerState extends State<TimePicker> {
           // Container(
           //   margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
           //   child: ElevatedButton(
-          //     onPressed: () {
-
+          //     onPressed: () async {
+          //       final bangun = DateFormat('HH:mm').format(dateTime);
+          //       setState(() {
+          //         isLoading = true;
+          //       });
+          // Stats stats = Stats(
+          //   "",
+          //   "",
+          //   "",
+          //   "",
+          //   "",
+          //   "",
+          //   "",
+          //   bangun,
+          //   "",
+          //   "",
+          //   "",
+          //   "",
+          // );
+          //       await StatsServices.AddWaktuBangun(stats).then((value) =>
+          //           ActivityServices.showToast(bangun, Colors.green));
           //     },
           //     child: Text(
           //       "SIMPAN",
@@ -49,6 +69,7 @@ class _TimePickerState extends State<TimePicker> {
           //         padding: EdgeInsets.fromLTRB(70, 5, 70, 5)),
           //   ),
           // ),
+          // isLoading == true ? ActivityServices.loadings() : Container()
         ],
       ),
     );
