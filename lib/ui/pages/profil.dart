@@ -8,9 +8,25 @@ class Profil extends StatefulWidget {
 
 class _ProfilState extends State<Profil> {
   bool isLoading = false;
+  String namaPengguna;
+  String emailPengguna;
+  String jk;
+  var titleList = [
+    "Jenis Kelamin",
+    "Usia",
+    "Berat Badan",
+    "Tinggi",
+    "Waktu Bangun",
+    "Waktu Tidur",
+    "Satuan",
+    "Tujuan Asupan",
+  ];
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final log = Logger();
+    // log.d(dataPengguna[0]);
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.dark,
@@ -31,6 +47,61 @@ class _ProfilState extends State<Profil> {
                 tileMode: TileMode.repeated)),
         child: Stack(
           children: <Widget>[
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 37),
+                  alignment: Alignment.topCenter,
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.white,
+                      child: InkWell(
+                        splashColor: Colors.blueAccent[700],
+                        onTap: () {},
+                        child: SizedBox(
+                          width: size.width / 4.5,
+                          height: size.height / 7.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  alignment: Alignment.topCenter,
+                  child: FutureBuilder(
+                    future: _fetchnama(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      return Text(
+                        "$namaPengguna",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Sansation",
+                          fontSize: 16,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  alignment: Alignment.topCenter,
+                  child: FutureBuilder(
+                    future: _fetchemail(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      return Text(
+                        "$emailPengguna",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Sansation",
+                          fontSize: 16,
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
             SizedBox.expand(
               child: DraggableScrollableSheet(
                 initialChildSize: 0.65,
@@ -54,6 +125,7 @@ class _ProfilState extends State<Profil> {
                         ]),
                     child: ListView(
                       controller: s,
+                      shrinkWrap: true,
                       children: <Widget>[
                         Center(
                           child: Container(
@@ -66,6 +138,60 @@ class _ProfilState extends State<Profil> {
                             ),
                           ),
                         ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(20, 10, 0, 20),
+                          child: Text(
+                            "Data Pribadi",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: size.height / 1.5,
+                          child: ListView.builder(
+                              itemCount: titleList.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {},
+                                  child: Card(
+                                    elevation: 0,
+                                    color: Color(0xFFf1fcff),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                titleList[index],
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.black,
+                                                    fontFamily: "Sansation"),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.centerRight,
+                                          child: FutureBuilder(
+                                            future: fetchdata(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot snapshot) {
+                                              return Text("halo");
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
+                        )
                       ],
                     ),
                   );
@@ -108,5 +234,43 @@ class _ProfilState extends State<Profil> {
         ),
       ),
     );
+  }
+
+  _fetchnama() async {
+    final pengguna = await FirebaseAuth.instance.currentUser.uid;
+    if (pengguna != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(pengguna)
+          .get()
+          .then((ds) {
+        namaPengguna = ds.data()['name'];
+        print(namaPengguna);
+      });
+    }
+  }
+
+  _fetchemail() async {
+    final pengguna = await FirebaseAuth.instance.currentUser.uid;
+    if (pengguna != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(pengguna)
+          .get()
+          .then((ds) {
+        emailPengguna = ds.data()['email'];
+        print(emailPengguna);
+      });
+    }
+  }
+
+  fetchdata() async {
+    dynamic dataPengguna = await StatsServices.getDataList();
+    if (dataPengguna != null) {
+      setState(() {
+        jk = dataPengguna[0];
+        print("$jk");
+      });
+    }
   }
 }

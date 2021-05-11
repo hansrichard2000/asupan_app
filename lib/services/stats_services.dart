@@ -9,9 +9,9 @@ class StatsServices {
   static DocumentReference statsDocument;
 
   //setup storage
-  // static Reference ref;
-  // static UploadTask uploadTask;
-  // static String imgUrl;
+  static Reference ref;
+  static UploadTask uploadTask;
+  static String imgUrl;
 
   static Future<bool> addJenisKelamin(Stats stats) async {
     await Firebase.initializeApp();
@@ -63,5 +63,45 @@ class StatsServices {
       'waktuTidur': stats.waktuTidur,
       'updatedAt': dateNow,
     });
+  }
+
+  static Future<bool> addImage(Stats stats, PickedFile imgFile) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+    if (statsDocument != null) {
+      ref = FirebaseStorage.instance
+          .ref()
+          .child("userImg")
+          .child(statsDocument.id + ".jpg");
+      uploadTask = ref.putFile(File(imgFile.path));
+
+      await uploadTask.whenComplete(() => ref.getDownloadURL().then(
+            (value) => imgUrl = value,
+          ));
+
+      productCollection.doc(statsDocument.id).update({
+        'fotoPengguna': imgUrl,
+        'updatedAt': dateNow,
+      });
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future getDataList() async {
+    DocumentSnapshot ds = await FirebaseFirestore.instance
+        .collection('stats')
+        .doc(statsDocument.id)
+        .get();
+    String jk = ds.get("jenisKelamin");
+    String usia = ds.get("usia");
+    String berat = ds.get("berat");
+    String tinggi = ds.get("tinggi");
+    String waktuBangun = ds.get("waktuBangun");
+    String tidur = ds.get("waktuTidur");
+    print(jk);
+    return [jk, usia, berat, tinggi, waktuBangun, tidur];
   }
 }
