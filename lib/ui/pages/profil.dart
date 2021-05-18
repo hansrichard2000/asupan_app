@@ -8,9 +8,11 @@ class Profil extends StatefulWidget {
 
 class _ProfilState extends State<Profil> {
   bool isLoading = false;
+  PickedFile imageFile;
   String namaPengguna;
   String emailPengguna;
   String jk;
+  final ImagePicker imagePicker = ImagePicker();
   var titleList = [
     "Jenis Kelamin",
     "Usia",
@@ -49,23 +51,55 @@ class _ProfilState extends State<Profil> {
           children: <Widget>[
             Column(
               children: [
-                Container(
-                  margin: EdgeInsets.only(top: 37),
-                  alignment: Alignment.topCenter,
-                  child: ClipOval(
-                    child: Material(
-                      color: Colors.white,
-                      child: InkWell(
-                        splashColor: Colors.blueAccent[700],
-                        onTap: () {},
-                        child: SizedBox(
-                          width: size.width / 4.5,
-                          height: size.height / 7.5,
+                imageFile == null
+                    ? Container(
+                        margin: EdgeInsets.only(top: 37),
+                        alignment: Alignment.topCenter,
+                        child: ClipOval(
+                          child: Material(
+                            color: Colors.white,
+                            child: InkWell(
+                              splashColor: Colors.blueAccent[700],
+                              onTap: () {
+                                showFileDialog(context);
+                              },
+                              child: SizedBox(
+                                child: Icon(
+                                  Icons.person,
+                                  size: 60,
+                                ),
+                                width: size.width / 4.5,
+                                height: size.height / 7.5,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        margin: EdgeInsets.only(top: 37),
+                        alignment: Alignment.topCenter,
+                        child: ClipOval(
+                          child: Material(
+                            color: Colors.white,
+                            child: InkWell(
+                              splashColor: Colors.blueAccent[700],
+                              onTap: () {
+                                showFileDialog(context);
+                              },
+                              child: SizedBox(
+                                child: Semantics(
+                                  child: Image.file(
+                                    File(imageFile.path),
+                                    width: 100,
+                                  ),
+                                ),
+                                width: size.width / 4.5,
+                                height: size.height / 7.5,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
                 Container(
                   margin: EdgeInsets.only(top: 10),
                   alignment: Alignment.topCenter,
@@ -272,5 +306,93 @@ class _ProfilState extends State<Profil> {
         print("$jk");
       });
     }
+  }
+
+  Future chooseFile(String type) async {
+    ImageSource imgSrc;
+    if (type == "camera") {
+      imgSrc = ImageSource.camera;
+    } else if (type == "gallery") {
+      imgSrc = ImageSource.gallery;
+    }
+    final selectedImage = await imagePicker.getImage(
+      source: imgSrc,
+      imageQuality: 50,
+    );
+    setState(() {
+      imageFile = selectedImage;
+    });
+  }
+
+  void showFileDialog(BuildContext ctx) {
+    showDialog(
+        context: ctx,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text("Confirmation"),
+            content: Text("Pick image from:"),
+            actions: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  chooseFile("camera");
+                  print(imageFile.path);
+                },
+                icon: Icon(Icons.camera_alt),
+                label: Text("Camera"),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  chooseFile("gallery");
+                  print(imageFile.path);
+                },
+                icon: Icon(Icons.folder_outlined),
+                label: Text("Gallery"),
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                ),
+              ),
+              ElevatedButton.icon(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  Stats stats = Stats(
+                    "",
+                    "",
+                    "",
+                    0,
+                    0,
+                    0,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                  );
+                  await StatsServices.addImage(stats, imageFile).then((value) {
+                    if (value == true) {
+                      ActivityServices.showToast(
+                          "Ubah Foto Profil berhasil", Colors.green);
+                      setState(() {
+                        isLoading = false;
+                      });
+                    } else {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      ActivityServices.showToast(
+                          "Gagal ubah foto profil", Colors.red);
+                    }
+                  });
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.save),
+                label: Text("Save"),
+                style: ElevatedButton.styleFrom(elevation: 0),
+              )
+            ],
+          );
+        });
   }
 }

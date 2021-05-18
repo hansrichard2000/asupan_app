@@ -17,7 +17,8 @@ class AuthServices {
         email: users.email, password: users.password);
 
     uid = userCredential.user.uid;
-    token = await userCredential.user.getIdToken();
+    // token = await userCredential.user.getIdToken();
+    token = await FirebaseMessaging.instance.getToken();
 
     await userCollection.doc(uid).set({
       'uid': uid,
@@ -50,6 +51,7 @@ class AuthServices {
         await auth.signInWithEmailAndPassword(email: email, password: password);
 
     uid = userCredential.user.uid;
+    token = await FirebaseMessaging.instance.getToken();
 
     await userCollection.doc(uid).update({
       'isOn': '1',

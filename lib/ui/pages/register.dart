@@ -204,6 +204,8 @@ class _RegisterState extends State<Register> {
                                     setState(() {
                                       isLoading = false;
                                     });
+                                    Navigator.pushReplacementNamed(
+                                        context, Datajk.routeName);
                                     ActivityServices.showToast(
                                         "Register Success",
                                         Colors.blueAccent[700]);
@@ -213,6 +215,9 @@ class _RegisterState extends State<Register> {
                                       Navigator.pushReplacementNamed(
                                           context, Datajk.routeName);
                                     } else {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
                                       ActivityServices.showToast(
                                           "Login Failed", Colors.red);
                                     }

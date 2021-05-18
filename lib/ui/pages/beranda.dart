@@ -44,6 +44,35 @@ class _BerandaState extends State<Beranda> {
                 tileMode: TileMode.repeated)),
         child: Stack(
           children: <Widget>[
+            Container(
+              alignment: Alignment.topCenter,
+              margin: EdgeInsets.only(top: 30),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width / 1.2,
+                height: MediaQuery.of(context).size.height / 3.5,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  elevation: 10,
+                  child: Stack(
+                    children: <Widget>[
+                      Opacity(
+                        opacity: 0.7,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      "https://www.toptal.com/designers/subtlepatterns/patterns/memphis-mini.png"),
+                                  fit: BoxFit.cover)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             SizedBox.expand(
               child: DraggableScrollableSheet(
                 initialChildSize: 0.5,
@@ -79,6 +108,16 @@ class _BerandaState extends State<Beranda> {
                             ),
                           ),
                         ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(15, 15, 0, 5),
+                          child: Text(
+                            "Catatan minum hari ini:",
+                            style: TextStyle(
+                              fontFamily: 'Sansation',
+                              fontSize: 20,
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   );

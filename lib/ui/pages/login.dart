@@ -147,10 +147,12 @@ class _LoginState extends State<Login> {
                                     try {
                                       msg = await AuthServices.signIn(
                                           ctrlEmail.text, ctrlPassword.text);
+                                      log.d(msg);
                                       if (msg == "success") {
                                         setState(() {
                                           isLoading = false;
                                         });
+
                                         ActivityServices.showToast(
                                             "Berhasil Masuk",
                                             Colors.blueAccent[700]);

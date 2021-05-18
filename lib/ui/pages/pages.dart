@@ -1,4 +1,6 @@
 // import 'dart:html';
+import 'dart:async';
+import 'dart:io';
 import 'dart:math' as Math;
 import 'package:asupan_app/models/models.dart';
 import 'package:asupan_app/services/services.dart';
@@ -9,10 +11,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+part 'splash.dart';
 part 'frontpage.dart';
 part 'login.dart';
 part 'register.dart';

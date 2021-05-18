@@ -1,8 +1,20 @@
+import 'dart:io';
+
 import 'package:asupan_app/shared/shared.dart';
 import 'package:asupan_app/ui/pages/pages.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void enablePlatformOverrideForDesktop() {
+  if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
+    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  }
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -15,7 +27,8 @@ class MyApp extends StatelessWidget {
       theme: MyTheme.lightTheme(),
       initialRoute: '/',
       routes: {
-        '/': (context) => Frontpage(),
+        '/': (context) => Splash(),
+        Splash.routeName: (context) => Splash(),
         Frontpage.routeName: (context) => Frontpage(),
         Login.routeName: (context) => Login(),
         Register.routeName: (context) => Register(),

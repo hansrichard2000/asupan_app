@@ -68,6 +68,20 @@ class StatsServices {
   static Future<bool> addImage(Stats stats, PickedFile imgFile) async {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
+    statsDocument = await productCollection.add({
+      'statsId': stats.userid,
+      'addBy': auth.currentUser.uid,
+      'jenisKelamin': stats.jenisKelamin,
+      'berat': stats.berat,
+      'tinggi': stats.tinggi,
+      'usia': stats.usia,
+      'asupan': stats.asupan,
+      'waktuBangun': stats.waktuBangun,
+      'waktuTidur': stats.waktuTidur,
+      'fotoPengguna': stats.foto,
+      'createdAt': dateNow,
+      'updatedAt': dateNow
+    });
     if (statsDocument != null) {
       ref = FirebaseStorage.instance
           .ref()
@@ -101,7 +115,6 @@ class StatsServices {
     String tinggi = ds.get("tinggi");
     String waktuBangun = ds.get("waktuBangun");
     String tidur = ds.get("waktuTidur");
-    print(jk);
     return [jk, usia, berat, tinggi, waktuBangun, tidur];
   }
 }
