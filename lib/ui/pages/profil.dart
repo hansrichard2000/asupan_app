@@ -7,10 +7,15 @@ class Profil extends StatefulWidget {
 }
 
 class _ProfilState extends State<Profil> {
+  String uid = FirebaseAuth.instance.currentUser.uid;
+  CollectionReference statsCollection =
+      FirebaseFirestore.instance.collection("stats");
+
   bool isLoading = false;
   PickedFile imageFile;
   String namaPengguna;
   String emailPengguna;
+  String fotoPengguna;
   String jk;
   final ImagePicker imagePicker = ImagePicker();
   var titleList = [
@@ -51,55 +56,38 @@ class _ProfilState extends State<Profil> {
           children: <Widget>[
             Column(
               children: [
-                imageFile == null
-                    ? Container(
-                        margin: EdgeInsets.only(top: 37),
-                        alignment: Alignment.topCenter,
-                        child: ClipOval(
-                          child: Material(
-                            color: Colors.white,
-                            child: InkWell(
-                              splashColor: Colors.blueAccent[700],
-                              onTap: () {
-                                showFileDialog(context);
-                              },
-                              child: SizedBox(
-                                child: Icon(
-                                  Icons.person,
-                                  size: 60,
-                                ),
-                                width: size.width / 4.5,
-                                height: size.height / 7.5,
+                Container(
+                  margin: EdgeInsets.only(top: 37),
+                  alignment: Alignment.topCenter,
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.white,
+                      child: InkWell(
+                        splashColor: Colors.blueAccent[700],
+                        onTap: () {
+                          showFileDialog(context);
+                        },
+                        child: SizedBox(
+                          child: Semantics(
+                              child: Stack(
+                            children: [
+                              Icon(Icons.person, size: 32),
+                              FutureBuilder(
+                                future: _fetchimage(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  return Image.network("$fotoPengguna");
+                                },
                               ),
-                            ),
-                          ),
-                        ),
-                      )
-                    : Container(
-                        margin: EdgeInsets.only(top: 37),
-                        alignment: Alignment.topCenter,
-                        child: ClipOval(
-                          child: Material(
-                            color: Colors.white,
-                            child: InkWell(
-                              splashColor: Colors.blueAccent[700],
-                              onTap: () {
-                                showFileDialog(context);
-                              },
-                              child: SizedBox(
-                                child: Semantics(
-                                  child: Image.file(
-                                    File(imageFile.path),
-                                    width: 100,
-                                  ),
-                                ),
-                                width: size.width / 4.5,
-                                height: size.height / 7.5,
-                              ),
-                            ),
-                          ),
+                            ],
+                          )),
+                          width: size.width / 4.5,
+                          height: size.height / 7.5,
                         ),
                       ),
+                    ),
+                  ),
+                ),
                 Container(
                   margin: EdgeInsets.only(top: 10),
                   alignment: Alignment.topCenter,
@@ -298,6 +286,19 @@ class _ProfilState extends State<Profil> {
     }
   }
 
+  _fetchimage() async {
+    final pengguna = await FirebaseAuth.instance.currentUser.uid;
+    if (pengguna != null) {
+      await FirebaseFirestore.instance
+          .collection('stats')
+          .doc(pengguna)
+          .get()
+          .then((ds) {
+        fotoPengguna = ds.data()['fotoPengguna'];
+      });
+    }
+  }
+
   fetchdata() async {
     dynamic dataPengguna = await StatsServices.getDataList();
     if (dataPengguna != null) {
@@ -356,21 +357,7 @@ class _ProfilState extends State<Profil> {
                   setState(() {
                     isLoading = true;
                   });
-                  Stats stats = Stats(
-                    "",
-                    "",
-                    "",
-                    0,
-                    0,
-                    0,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                  );
-                  await StatsServices.addImage(stats, imageFile).then((value) {
+                  await StatsServices.addImage(imageFile).then((value) {
                     if (value == true) {
                       ActivityServices.showToast(
                           "Ubah Foto Profil berhasil", Colors.green);

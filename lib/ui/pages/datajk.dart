@@ -138,13 +138,13 @@ class _DatajkState extends State<Datajk> {
                                   buttonFemale = false;
                                 });
                                 Stats stats = Stats(
-                                  "",
                                   FirebaseAuth.instance.currentUser.uid,
-                                  "L",
+                                  "Laki=laki",
                                   0,
                                   0,
                                   0,
-                                  "",
+                                  0,
+                                  0,
                                   "",
                                   "",
                                   "",
@@ -195,19 +195,18 @@ class _DatajkState extends State<Datajk> {
                                   buttonMale = false;
                                 });
                                 Stats stats = Stats(
-                                  "",
-                                  FirebaseAuth.instance.currentUser.uid,
-                                  "P",
-                                  0,
-                                  0,
-                                  0,
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                );
+                                    FirebaseAuth.instance.currentUser.uid,
+                                    "Perempuan",
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "");
                                 await StatsServices.addJenisKelamin(stats).then(
                                     (value) => ActivityServices.showToast(
                                         "Perempuan", Colors.red[200]));

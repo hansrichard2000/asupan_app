@@ -163,11 +163,11 @@ class _TidurState extends State<Tidur> {
                         Stats stats = Stats(
                           "",
                           "",
-                          "",
                           null,
                           null,
                           null,
-                          "",
+                          null,
+                          null,
                           "",
                           tidur,
                           "",

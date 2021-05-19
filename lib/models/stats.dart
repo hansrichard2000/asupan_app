@@ -2,12 +2,12 @@ part of 'models.dart';
 
 class Stats extends Equatable {
   final String userid;
-  final String addby;
   final String jenisKelamin;
-  final String berat;
-  final String tinggi;
-  final String usia;
-  final String asupan;
+  final int berat;
+  final int tinggi;
+  final int usia;
+  final int asupanSementara;
+  final double asupanMinimum;
   final String waktuBangun;
   final String waktuTidur;
   final String foto;
@@ -16,12 +16,12 @@ class Stats extends Equatable {
 
   Stats(
     this.userid,
-    this.addby,
     this.jenisKelamin,
     this.berat,
     this.tinggi,
     this.usia,
-    this.asupan,
+    this.asupanSementara,
+    this.asupanMinimum,
     this.waktuBangun,
     this.waktuTidur,
     this.foto,
@@ -33,12 +33,12 @@ class Stats extends Equatable {
   // TODO: implement props
   List<Object> get props => [
         userid,
-        addby,
         jenisKelamin,
         berat,
         tinggi,
         usia,
-        asupan,
+        asupanSementara,
+        asupanMinimum,
         waktuBangun,
         waktuTidur,
         foto,

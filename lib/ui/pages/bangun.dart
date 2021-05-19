@@ -165,11 +165,11 @@ class _BangunState extends State<Bangun> {
                         Stats stats = Stats(
                           "",
                           "",
-                          "",
                           null,
                           null,
                           null,
-                          "",
+                          null,
+                          null,
                           bangun,
                           "",
                           "",

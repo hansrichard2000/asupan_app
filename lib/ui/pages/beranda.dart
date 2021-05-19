@@ -68,6 +68,27 @@ class _BerandaState extends State<Beranda> {
                                   fit: BoxFit.cover)),
                         ),
                       ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "1000 / 2030 ml",
+                          style: TextStyle(
+                              fontFamily: 'Sansation',
+                              fontSize: 28,
+                              color: Color(0xFF0057FF)),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 35),
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          "Target Minuman Harian",
+                          style: TextStyle(
+                              fontFamily: 'Sansation',
+                              fontSize: 20,
+                              color: Color(0xFF0057FF)),
+                        ),
+                      ),
                     ],
                   ),
                 ),

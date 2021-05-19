@@ -16,14 +16,12 @@ class StatsServices {
   static Future<bool> addJenisKelamin(Stats stats) async {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
-    statsDocument = await productCollection.add({
-      'statsId': stats.userid,
-      'addBy': auth.currentUser.uid,
+    await productCollection.doc(auth.currentUser.uid).set({
+      'statsId': auth.currentUser.uid,
       'jenisKelamin': stats.jenisKelamin,
       'berat': stats.berat,
       'tinggi': stats.tinggi,
       'usia': stats.usia,
-      'asupan': stats.asupan,
       'waktuBangun': stats.waktuBangun,
       'waktuTidur': stats.waktuTidur,
       'fotoPengguna': stats.foto,
@@ -36,11 +34,12 @@ class StatsServices {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
 
-    await productCollection.doc(statsDocument.id).update({
-      'statsId': statsDocument.id,
+    await productCollection.doc(auth.currentUser.uid).update({
       'berat': stats.berat,
       'tinggi': stats.tinggi,
       'usia': stats.usia,
+      'asupanSementara': stats.asupanSementara,
+      'asupanMinimum': stats.asupanMinimum,
       'updatedAt': dateNow
     });
   }
@@ -49,7 +48,7 @@ class StatsServices {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
 
-    await productCollection.doc(statsDocument.id).update({
+    await productCollection.doc(auth.currentUser.uid).update({
       'waktuBangun': stats.waktuBangun,
       'updatedAt': dateNow,
     });
@@ -59,55 +58,37 @@ class StatsServices {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
 
-    await productCollection.doc(statsDocument.id).update({
+    await productCollection.doc(auth.currentUser.uid).update({
       'waktuTidur': stats.waktuTidur,
       'updatedAt': dateNow,
     });
   }
 
-  static Future<bool> addImage(Stats stats, PickedFile imgFile) async {
+  static Future<bool> addImage(PickedFile imgFile) async {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
-    statsDocument = await productCollection.add({
-      'statsId': stats.userid,
-      'addBy': auth.currentUser.uid,
-      'jenisKelamin': stats.jenisKelamin,
-      'berat': stats.berat,
-      'tinggi': stats.tinggi,
-      'usia': stats.usia,
-      'asupan': stats.asupan,
-      'waktuBangun': stats.waktuBangun,
-      'waktuTidur': stats.waktuTidur,
-      'fotoPengguna': stats.foto,
-      'createdAt': dateNow,
-      'updatedAt': dateNow
+    ref = FirebaseStorage.instance
+        .ref()
+        .child("userImg")
+        .child(auth.currentUser.uid + ".jpg");
+    uploadTask = ref.putFile(File(imgFile.path));
+
+    await uploadTask.whenComplete(() => ref.getDownloadURL().then(
+          (value) => imgUrl = value,
+        ));
+
+    productCollection.doc(auth.currentUser.uid).update({
+      'fotoPengguna': imgUrl,
+      'updatedAt': dateNow,
     });
-    if (statsDocument != null) {
-      ref = FirebaseStorage.instance
-          .ref()
-          .child("userImg")
-          .child(statsDocument.id + ".jpg");
-      uploadTask = ref.putFile(File(imgFile.path));
 
-      await uploadTask.whenComplete(() => ref.getDownloadURL().then(
-            (value) => imgUrl = value,
-          ));
-
-      productCollection.doc(statsDocument.id).update({
-        'fotoPengguna': imgUrl,
-        'updatedAt': dateNow,
-      });
-
-      return true;
-    } else {
-      return false;
-    }
+    return true;
   }
 
   static Future getDataList() async {
     DocumentSnapshot ds = await FirebaseFirestore.instance
         .collection('stats')
-        .doc(statsDocument.id)
+        .doc(auth.currentUser.uid)
         .get();
     String jk = ds.get("jenisKelamin");
     String usia = ds.get("usia");

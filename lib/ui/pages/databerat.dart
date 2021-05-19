@@ -229,19 +229,30 @@ class _DataberatState extends State<Databerat> {
                             isLoading = true;
                           });
                           Stats stats = Stats(
-                            "",
-                            FirebaseAuth.instance.currentUser.uid,
-                            "",
-                            ctrlBerat.text,
-                            ctrlTinggi.text,
-                            ctrlUsia.text,
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                          );
+                              "",
+                              "",
+                              int.parse(ctrlBerat.text),
+                              int.parse(ctrlTinggi.text),
+                              int.parse(ctrlUsia.text),
+                              0,
+                              (2.447 -
+                                      (0.09145 * int.parse(ctrlUsia.text) +
+                                          (0.1074 *
+                                              int.parse(ctrlTinggi.text)) +
+                                          (0.3362 *
+                                              int.parse(ctrlBerat.text)))) /
+                                  ((2.447 -
+                                          (0.09145 * int.parse(ctrlUsia.text) +
+                                              (0.1074 *
+                                                  int.parse(ctrlTinggi.text)) +
+                                              (0.3362 *
+                                                  int.parse(ctrlBerat.text)))) *
+                                      0.5),
+                              "",
+                              "",
+                              "",
+                              "",
+                              "");
                           await StatsServices.addDataTubuh(stats).then(
                               (value) => ActivityServices.showToast(
                                   "Berhasil Disimpan", Colors.green));
