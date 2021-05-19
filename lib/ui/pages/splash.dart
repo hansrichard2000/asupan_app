@@ -7,9 +7,6 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  String uid = FirebaseAuth.instance.currentUser.uid;
-  CollectionReference userCollection =
-      FirebaseFirestore.instance.collection("users");
   String userName;
   @override
   void initState() {
@@ -17,30 +14,34 @@ class _SplashState extends State<Splash> {
     _loadSplash();
   }
 
-  Future<String> _getUserName() async {
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(await FirebaseAuth.instance.currentUser.uid)
-        .get()
-        .then((value) {
-      setState(() {
-        userName = value.data()['name'].toString();
-      });
-    });
-    return userName;
-  }
-
   _loadSplash() async {
     var _duration = Duration(seconds: 2);
     return Timer(_duration, checkAuth);
   }
 
+  // Future<String> _getUserName() async {
+  //   FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(await FirebaseAuth.instance.currentUser.uid)
+  //       .get()
+  //       .then((value) {
+  //     setState(() {
+  //       userName = value.data()['name'].toString();
+  //     });
+  //   });
+  //   return userName;
+  // }
+
   void checkAuth() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     if (auth.currentUser != null) {
+      String uid = FirebaseAuth.instance.currentUser.uid;
+      CollectionReference userCollection =
+          FirebaseFirestore.instance.collection("users");
+      // userName = await _getUserName();
       Navigator.pushReplacementNamed(context, MainMenu.routeName);
       ActivityServices.showToast(
-          "Welcome Back " + userName, Colors.blueAccent[700]);
+          "Welcome Back " + auth.currentUser.email, Colors.blueAccent[700]);
     } else {
       Navigator.pushReplacementNamed(context, Frontpage.routeName);
     }

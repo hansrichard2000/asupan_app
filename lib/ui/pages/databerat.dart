@@ -228,6 +228,18 @@ class _DataberatState extends State<Databerat> {
                           setState(() {
                             isLoading = true;
                           });
+                          double hasil = (2.447 -
+                                  (0.09145 * double.parse(ctrlUsia.text) +
+                                      (0.1074 * double.parse(ctrlTinggi.text)) +
+                                      (0.3362 *
+                                          double.parse(ctrlBerat.text)))) /
+                              ((2.447 -
+                                      (0.09145 * double.parse(ctrlUsia.text) +
+                                          (0.1074 *
+                                              double.parse(ctrlTinggi.text)) +
+                                          (0.3362 *
+                                              double.parse(ctrlBerat.text)))) *
+                                  0.5);
                           Stats stats = Stats(
                               "",
                               "",
@@ -235,19 +247,7 @@ class _DataberatState extends State<Databerat> {
                               int.parse(ctrlTinggi.text),
                               int.parse(ctrlUsia.text),
                               0,
-                              (2.447 -
-                                      (0.09145 * int.parse(ctrlUsia.text) +
-                                          (0.1074 *
-                                              int.parse(ctrlTinggi.text)) +
-                                          (0.3362 *
-                                              int.parse(ctrlBerat.text)))) /
-                                  ((2.447 -
-                                          (0.09145 * int.parse(ctrlUsia.text) +
-                                              (0.1074 *
-                                                  int.parse(ctrlTinggi.text)) +
-                                              (0.3362 *
-                                                  int.parse(ctrlBerat.text)))) *
-                                      0.5),
+                              hasil.toInt() * 1000,
                               "",
                               "",
                               "",

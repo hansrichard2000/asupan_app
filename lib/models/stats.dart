@@ -7,7 +7,7 @@ class Stats extends Equatable {
   final int tinggi;
   final int usia;
   final int asupanSementara;
-  final double asupanMinimum;
+  final int asupanMinimum;
   final String waktuBangun;
   final String waktuTidur;
   final String foto;

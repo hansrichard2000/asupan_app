@@ -176,6 +176,7 @@ class _TidurState extends State<Tidur> {
                         );
                         await StatsServices.AddWaktuTidur(stats).then((value) =>
                             ActivityServices.showToast(tidur, Colors.green));
+
                         Navigator.pushReplacementNamed(
                             context, MainMenu.routeName);
                       },

@@ -13,6 +13,8 @@ class _BerandaState extends State<Beranda> {
   // final user = Provider.of<Users>(context);
   // final uid = user.uid;
   String namePengguna;
+  String asupanSementara;
+  String asupanMinimum;
   // FirebaseFirestore.instance.collection('users').doc('vqiLVKZ3z5Pab6RxDitlslJTUPZ2').get(FieldPath('name'));
   @override
   Widget build(BuildContext context) {
@@ -69,15 +71,20 @@ class _BerandaState extends State<Beranda> {
                         ),
                       ),
                       Container(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "1000 / 2030 ml",
-                          style: TextStyle(
-                              fontFamily: 'Sansation',
-                              fontSize: 28,
-                              color: Color(0xFF0057FF)),
-                        ),
-                      ),
+                          alignment: Alignment.center,
+                          child: FutureBuilder(
+                            future: _fetchasupan(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              return Text(
+                                "$asupanSementara / $asupanMinimum ml",
+                                style: TextStyle(
+                                    fontFamily: 'Sansation',
+                                    fontSize: 30,
+                                    color: Color(0xFF0057FF)),
+                              );
+                            },
+                          )),
                       Container(
                         margin: EdgeInsets.only(bottom: 35),
                         alignment: Alignment.bottomCenter,
@@ -168,6 +175,20 @@ class _BerandaState extends State<Beranda> {
           .then((ds) {
         namePengguna = ds.data()['name'];
         print(namePengguna);
+      });
+    }
+  }
+
+  _fetchasupan() async {
+    final pengguna = await FirebaseAuth.instance.currentUser.uid;
+    if (pengguna != null) {
+      await FirebaseFirestore.instance
+          .collection('stats')
+          .doc(pengguna)
+          .get()
+          .then((ds) {
+        asupanSementara = ds.data()['asupanSementara'].toString();
+        asupanMinimum = ds.data()['asupanMinimum'].toString();
       });
     }
   }

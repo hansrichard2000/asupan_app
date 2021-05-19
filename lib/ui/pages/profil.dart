@@ -17,7 +17,12 @@ class _ProfilState extends State<Profil> {
   String emailPengguna;
   String fotoPengguna;
   String jk;
+  String usia;
+  String berat;
+  String tinggi;
+  String waktuBangun, tidur;
   final ImagePicker imagePicker = ImagePicker();
+
   var titleList = [
     "Jenis Kelamin",
     "Usia",
@@ -71,7 +76,10 @@ class _ProfilState extends State<Profil> {
                           child: Semantics(
                               child: Stack(
                             children: [
-                              Icon(Icons.person, size: 32),
+                              Container(
+                                alignment: Alignment.center,
+                                child: Icon(Icons.person, size: 56),
+                              ),
                               FutureBuilder(
                                 future: _fetchimage(),
                                 builder: (BuildContext context,
@@ -198,14 +206,37 @@ class _ProfilState extends State<Profil> {
                                             ],
                                           ),
                                         ),
-                                        Container(
-                                          alignment: Alignment.centerRight,
-                                          child: FutureBuilder(
-                                            future: fetchdata(),
-                                            builder: (BuildContext context,
-                                                AsyncSnapshot snapshot) {
-                                              return Text("halo");
-                                            },
+                                        Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              FutureBuilder(
+                                                future: _fetchdata(),
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot snapshot) {
+                                                  var dataList = [
+                                                    "$jk",
+                                                    "$usia",
+                                                    "$berat",
+                                                    "$tinggi",
+                                                    "$waktuBangun",
+                                                    "$tidur",
+                                                    "",
+                                                    ""
+                                                  ];
+                                                  return Text(
+                                                    dataList[index],
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontFamily: "Sansation",
+                                                      fontSize: 16,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
                                           ),
                                         )
                                       ],
@@ -299,12 +330,20 @@ class _ProfilState extends State<Profil> {
     }
   }
 
-  fetchdata() async {
-    dynamic dataPengguna = await StatsServices.getDataList();
-    if (dataPengguna != null) {
-      setState(() {
-        jk = dataPengguna[0];
-        print("$jk");
+  _fetchdata() async {
+    final pengguna = await FirebaseAuth.instance.currentUser.uid;
+    if (pengguna != null) {
+      await FirebaseFirestore.instance
+          .collection('stats')
+          .doc(pengguna)
+          .get()
+          .then((ds) {
+        jk = ds.data()['jenisKelamin'];
+        usia = ds.data()['usia'];
+        berat = ds.data()['berat'];
+        tinggi = ds.data()['tinggi'];
+        waktuBangun = ds.data()['waktuBangun'];
+        tidur = ds.data()['waktuTidur'];
       });
     }
   }

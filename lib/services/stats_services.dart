@@ -91,9 +91,9 @@ class StatsServices {
         .doc(auth.currentUser.uid)
         .get();
     String jk = ds.get("jenisKelamin");
-    String usia = ds.get("usia");
-    String berat = ds.get("berat");
-    String tinggi = ds.get("tinggi");
+    int usia = ds.get("usia");
+    int berat = ds.get("berat");
+    int tinggi = ds.get("tinggi");
     String waktuBangun = ds.get("waktuBangun");
     String tidur = ds.get("waktuTidur");
     return [jk, usia, berat, tinggi, waktuBangun, tidur];
