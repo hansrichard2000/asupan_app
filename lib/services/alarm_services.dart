@@ -7,14 +7,14 @@ class AlarmServices {
       FirebaseFirestore.instance.collection("alarm");
   static DocumentReference alarmDocument;
 
-  static Future<bool> addAlarm(Alarm alarm) async {
+  static Future<bool> addAlarm(Alarms alarms) async {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
     alarmDocument = await alarmCollection.add({
-      "alarmId": alarm.alarmId,
-      "clock": alarm.clock,
+      "alarmId": alarms.alarmId,
+      "clock": alarms.clock,
       "addBy": auth.currentUser.uid,
-      "isOn": alarm.isOn,
+      "isOn": alarms.isOn,
       "createdAt": dateNow,
       "updatedAt": dateNow,
     });

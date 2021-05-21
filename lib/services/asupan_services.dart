@@ -7,12 +7,12 @@ class AsupanServices {
       FirebaseFirestore.instance.collection("asupan");
   static DocumentReference asupanDocument;
 
-  static Future<bool> addAsupan(Asupan asupan) async {
+  static Future<bool> addAsupan(Asupans asupans) async {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
     asupanDocument = await asupanCollection.add({
-      "asupanid": asupan.asupanid,
-      "jumlah": asupan.jumlah,
+      "asupanid": asupans.asupanid,
+      "jumlah": asupans.jumlah,
       "addBy": auth.currentUser.uid,
       "createdAt": dateNow,
       "updatedAt": dateNow,
@@ -22,5 +22,7 @@ class AsupanServices {
         'asupanid': asupanDocument.id,
       });
     }
+
+    return true;
   }
 }

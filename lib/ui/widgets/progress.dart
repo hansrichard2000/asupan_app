@@ -14,7 +14,7 @@ class CustomProgressBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Icon(
-          Icons.timer,
+          Icons.water,
           color: Colors.grey[700],
         ),
         SizedBox(width: 5),

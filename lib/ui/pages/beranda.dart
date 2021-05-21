@@ -8,14 +8,51 @@ class Beranda extends StatefulWidget {
 
 class _BerandaState extends State<Beranda> {
   int _currentIndex = 0;
+  int _currentdrink = 175;
   // dynamic name = AuthServices.getUsersName();
   final log = Logger();
+  bool isLoading = false;
   // final user = Provider.of<Users>(context);
   // final uid = user.uid;
   String namePengguna;
   String asupanSementara;
   String asupanMinimum;
-  // FirebaseFirestore.instance.collection('users').doc('vqiLVKZ3z5Pab6RxDitlslJTUPZ2').get(FieldPath('name'));
+  String uid = FirebaseAuth.instance.currentUser.uid;
+  CollectionReference asupanCollection =
+      FirebaseFirestore.instance.collection("asupan");
+
+  Widget buildBody() {
+    return Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height / 1.2,
+      child: StreamBuilder<QuerySnapshot>(
+        stream: asupanCollection.where('addBy', isEqualTo: uid).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Failed to load data");
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container();
+          }
+
+          return new ListView(
+            children: snapshot.data.docs.map((DocumentSnapshot doc) {
+              Asupans asupans = new Asupans(
+                doc.data()['asupanid'],
+                doc.data()['jumlah'],
+                doc.data()['addBy'],
+                doc.data()['createdAt'],
+                doc.data()['updatedAt'],
+              );
+              return AsupanCard(asupans: asupans);
+            }).toList(),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -70,41 +107,52 @@ class _BerandaState extends State<Beranda> {
                                   fit: BoxFit.cover)),
                         ),
                       ),
-                      Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 35),
-                            child: CustomProgressBar(200, 50, 100),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(bottom: 15),
-                              child: FutureBuilder(
-                                future: _fetchasupan(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot snapshot) {
-                                  return Text(
-                                    "$asupanSementara / $asupanMinimum ml",
-                                    style: TextStyle(
-                                        fontFamily: 'Sansation',
-                                        fontSize: 30,
-                                        color: Color(0xFF0057FF)),
-                                  );
-                                },
-                              )),
-                          Container(
-                            alignment: Alignment.bottomCenter,
-                            child: Text(
-                              "Target Minuman Harian",
-                              style: TextStyle(
-                                  fontFamily: 'Sansation',
-                                  fontSize: 20,
-                                  color: Color(0xFF0057FF)),
-                            ),
-                          ),
-                        ],
+                      Container(
+                          margin: EdgeInsets.only(top: 35),
+                          child: FutureBuilder(
+                            future: _fetchasupan(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              double progress =
+                                  (double.parse("$asupanSementara") /
+                                      double.parse("$asupanMinimum"));
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return ActivityServices.loadings();
+                              } else {
+                                return CustomProgressBar(
+                                    size.width / 1.9, progress * 100, 100);
+                              }
+                            },
+                          )),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                          alignment: Alignment.center,
+                          child: FutureBuilder(
+                            future: _fetchasupan(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              return Text(
+                                "$asupanSementara / $asupanMinimum ml",
+                                style: TextStyle(
+                                    fontFamily: 'Sansation',
+                                    fontSize: 30,
+                                    color: Color(0xFF0057FF)),
+                              );
+                            },
+                          )),
+                      Container(
+                        margin: EdgeInsets.only(top: 100),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Target Minuman Harian",
+                          style: TextStyle(
+                              fontFamily: 'Sansation',
+                              fontSize: 20,
+                              color: Color(0xFF0057FF)),
+                        ),
                       ),
                     ],
                   ),
@@ -118,7 +166,9 @@ class _BerandaState extends State<Beranda> {
                 child: Material(
                   color: Colors.white, // button color
                   child: InkWell(
-                    onTap: () async {},
+                    onTap: () async {
+                      showDrinkDialog(context);
+                    },
                     splashColor: Colors.blue[700], // inkwell color
                     child: SizedBox(
                         width: size.width / 9,
@@ -135,7 +185,46 @@ class _BerandaState extends State<Beranda> {
               margin: EdgeInsets.only(bottom: size.height / 4.9),
               alignment: Alignment.center,
               child: FloatingActionButton(
-                onPressed: () {},
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  Asupans asupans = Asupans(
+                    "",
+                    _currentdrink,
+                    FirebaseAuth.instance.currentUser.uid,
+                    "",
+                    "",
+                  );
+                  int asupanLagi;
+                  await FirebaseFirestore.instance
+                      .collection('stats')
+                      .doc(FirebaseAuth.instance.currentUser.uid)
+                      .get()
+                      .then((ds) {
+                    asupanLagi = ds.data()['asupanSementara'];
+                  });
+                  int hasil = asupanLagi + _currentdrink;
+                  print(hasil);
+                  Stats stats =
+                      Stats("", "", 0, 0, 0, hasil, 0, "", "", "", "", "");
+                  await StatsServices.updateStats(stats);
+                  await AsupanServices.addAsupan(asupans).then((value) {
+                    if (value == true) {
+                      ActivityServices.showToast(
+                          "Catatan berhasil ditambahkan", Color(0xFF0057FF));
+                      setState(() {
+                        isLoading = false;
+                      });
+                    } else {
+                      ActivityServices.showToast(
+                          "Catatan gagal ditambahkan", Colors.red);
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
+                  });
+                },
                 child: Icon(Icons.add),
                 backgroundColor: Color(0xFF0057FF),
               ),
@@ -184,7 +273,11 @@ class _BerandaState extends State<Beranda> {
                               fontSize: 20,
                             ),
                           ),
-                        )
+                        ),
+                        buildBody(),
+                        isLoading == true
+                            ? ActivityServices.loadings()
+                            : Container()
                       ],
                     ),
                   );
@@ -202,6 +295,26 @@ class _BerandaState extends State<Beranda> {
         ),
       ),
     );
+  }
+
+  void showDrinkDialog(BuildContext ctx) {
+    showDialog(
+        context: ctx,
+        builder: (ctx) {
+          return Center(
+              child: Material(
+            type: MaterialType.transparency,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              padding: EdgeInsets.all(15),
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.width,
+            ),
+          ));
+        });
   }
 
   _fetch() async {

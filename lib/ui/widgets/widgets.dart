@@ -12,3 +12,4 @@ part 'wave.dart';
 part 'clipper.dart';
 part 'timepicker.dart';
 part 'progress.dart';
+part 'asupancard.dart';

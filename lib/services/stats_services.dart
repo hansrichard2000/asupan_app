@@ -85,6 +85,16 @@ class StatsServices {
     return true;
   }
 
+  static Future<bool> updateStats(Stats stats) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+    await productCollection.doc(auth.currentUser.uid).update({
+      'asupanSementara': stats.asupanSementara,
+    });
+
+    return true;
+  }
+
   static Future getDataList() async {
     DocumentSnapshot ds = await FirebaseFirestore.instance
         .collection('stats')

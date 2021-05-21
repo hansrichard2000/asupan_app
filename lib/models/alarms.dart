@@ -1,6 +1,6 @@
 part of 'models.dart';
 
-class Alarm extends Equatable {
+class Alarms extends Equatable {
   final String alarmId;
   final String clock;
   final String addBy;
@@ -8,7 +8,7 @@ class Alarm extends Equatable {
   final String createdAt;
   final String updatedAt;
 
-  Alarm(this.alarmId, this.clock, this.addBy, this.isOn, this.createdAt,
+  Alarms(this.alarmId, this.clock, this.addBy, this.isOn, this.createdAt,
       this.updatedAt);
 
   @override
