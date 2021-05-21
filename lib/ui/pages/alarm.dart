@@ -7,6 +7,45 @@ class Alarm extends StatefulWidget {
 }
 
 class _AlarmState extends State<Alarm> {
+  String uid = FirebaseAuth.instance.currentUser.uid;
+  CollectionReference alarmCollection =
+      FirebaseFirestore.instance.collection("alarm");
+
+  Widget buildBody() {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: StreamBuilder<QuerySnapshot>(
+        stream: alarmCollection.where('addBy', isEqualTo: uid).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Failed to load data!");
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return ActivityServices.loadings();
+          }
+
+          return new ListView(
+            children: snapshot.data.docs.map((DocumentSnapshot doc) {
+              Alarms alarms = new Alarms(
+                doc.data()['alarmId'],
+                doc.data()['clock'],
+                doc.data()['addBy'],
+                doc.data()['isOn'],
+                doc.data()['createdAt'],
+                doc.data()['updatedAt'],
+              );
+              return AlarmList(
+                alarms: alarms,
+              );
+            }).toList(),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -42,6 +81,18 @@ class _AlarmState extends State<Alarm> {
                     color: Color(0xFFf1fcff),
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(20))),
+              ),
+              Container(
+                child: buildBody(),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 20),
+                alignment: Alignment.bottomCenter,
+                child: FloatingActionButton(
+                  onPressed: () async {},
+                  child: Icon(Icons.add),
+                  backgroundColor: Color(0xFF0057FF),
+                ),
               ),
             ],
           ),
