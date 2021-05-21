@@ -339,9 +339,9 @@ class _ProfilState extends State<Profil> {
           .get()
           .then((ds) {
         jk = ds.data()['jenisKelamin'];
-        usia = ds.data()['usia'];
-        berat = ds.data()['berat'];
-        tinggi = ds.data()['tinggi'];
+        usia = ds.data()['usia'].toString();
+        berat = ds.data()['berat'].toString();
+        tinggi = ds.data()['tinggi'].toString();
         waktuBangun = ds.data()['waktuBangun'];
         tidur = ds.data()['waktuTidur'];
       });

@@ -48,7 +48,7 @@ class _BerandaState extends State<Beranda> {
           children: <Widget>[
             Container(
               alignment: Alignment.topCenter,
-              margin: EdgeInsets.only(top: 30),
+              margin: EdgeInsets.only(top: 10),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width / 1.2,
                 height: MediaQuery.of(context).size.height / 3.5,
@@ -70,35 +70,74 @@ class _BerandaState extends State<Beranda> {
                                   fit: BoxFit.cover)),
                         ),
                       ),
-                      Container(
-                          alignment: Alignment.center,
-                          child: FutureBuilder(
-                            future: _fetchasupan(),
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              return Text(
-                                "$asupanSementara / $asupanMinimum ml",
-                                style: TextStyle(
-                                    fontFamily: 'Sansation',
-                                    fontSize: 30,
-                                    color: Color(0xFF0057FF)),
-                              );
-                            },
-                          )),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 35),
-                        alignment: Alignment.bottomCenter,
-                        child: Text(
-                          "Target Minuman Harian",
-                          style: TextStyle(
-                              fontFamily: 'Sansation',
-                              fontSize: 20,
-                              color: Color(0xFF0057FF)),
-                        ),
+                      Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 35),
+                            child: CustomProgressBar(200, 50, 100),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(bottom: 15),
+                              child: FutureBuilder(
+                                future: _fetchasupan(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  return Text(
+                                    "$asupanSementara / $asupanMinimum ml",
+                                    style: TextStyle(
+                                        fontFamily: 'Sansation',
+                                        fontSize: 30,
+                                        color: Color(0xFF0057FF)),
+                                  );
+                                },
+                              )),
+                          Container(
+                            alignment: Alignment.bottomCenter,
+                            child: Text(
+                              "Target Minuman Harian",
+                              style: TextStyle(
+                                  fontFamily: 'Sansation',
+                                  fontSize: 20,
+                                  color: Color(0xFF0057FF)),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 5, 30, size.height / 8.5),
+              alignment: Alignment.centerRight,
+              child: ClipOval(
+                child: Material(
+                  color: Colors.white, // button color
+                  child: InkWell(
+                    onTap: () async {},
+                    splashColor: Colors.blue[700], // inkwell color
+                    child: SizedBox(
+                        width: size.width / 9,
+                        height: size.height / 15,
+                        child: Icon(
+                          Icons.local_drink,
+                          color: Color(0xFF0057FF),
+                        )),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: size.height / 4.9),
+              alignment: Alignment.center,
+              child: FloatingActionButton(
+                onPressed: () {},
+                child: Icon(Icons.add),
+                backgroundColor: Color(0xFF0057FF),
               ),
             ),
             SizedBox.expand(

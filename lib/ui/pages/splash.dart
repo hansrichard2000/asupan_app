@@ -35,7 +35,6 @@ class _SplashState extends State<Splash> {
   void checkAuth() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     if (auth.currentUser != null) {
-      String uid = FirebaseAuth.instance.currentUser.uid;
       CollectionReference userCollection =
           FirebaseFirestore.instance.collection("users");
       // userName = await _getUserName();
