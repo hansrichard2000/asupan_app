@@ -12,6 +12,20 @@ class _BerandaState extends State<Beranda> {
   // dynamic name = AuthServices.getUsersName();
   final log = Logger();
   bool isLoading = false;
+  Color drinkButton1 = Colors.white;
+  Color drinkButton2 = Colors.white;
+  Color drinkButton3 = Colors.white;
+  Color drinkButton4 = Colors.white;
+  Color drinkButton5 = Colors.white;
+  Color drinkButton6 = Colors.white;
+  Color drinkButton7 = Colors.white;
+  Color textButton1 = Color(0xFF0057FF);
+  Color textButton2 = Color(0xFF0057FF);
+  Color textButton3 = Color(0xFF0057FF);
+  Color textButton4 = Color(0xFF0057FF);
+  Color textButton5 = Color(0xFF0057FF);
+  Color textButton6 = Color(0xFF0057FF);
+  Color textButton7 = Color(0xFF0057FF);
   // final user = Provider.of<Users>(context);
   // final uid = user.uid;
   String namePengguna;
@@ -24,7 +38,7 @@ class _BerandaState extends State<Beranda> {
   Widget buildBody() {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height / 1.2,
+      height: MediaQuery.of(context).size.height / 1.45,
       child: StreamBuilder<QuerySnapshot>(
         stream: asupanCollection.where('addBy', isEqualTo: uid).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -311,7 +325,276 @@ class _BerandaState extends State<Beranda> {
               ),
               padding: EdgeInsets.all(15),
               width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.width / 1.7,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            drinkButton1 = Colors.blueAccent[700];
+                            drinkButton2 = Colors.white;
+                            drinkButton3 = Colors.white;
+                            drinkButton4 = Colors.white;
+                            drinkButton5 = Colors.white;
+                            drinkButton6 = Colors.white;
+                            drinkButton7 = Colors.white;
+                            textButton1 = Colors.white;
+                            textButton2 = Color(0xFF0057FF);
+                            textButton3 = Color(0xFF0057FF);
+                            textButton4 = Color(0xFF0057FF);
+                            textButton5 = Color(0xFF0057FF);
+                            textButton6 = Color(0xFF0057FF);
+                            textButton7 = Color(0xFF0057FF);
+                            _currentdrink = 100;
+                          });
+                        },
+                        child: Text(
+                          "100",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Sansation",
+                            color: textButton1,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            primary: drinkButton1,
+                            elevation: 4,
+                            padding: EdgeInsets.fromLTRB(20, 5, 20, 5)),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            drinkButton1 = Colors.white;
+                            drinkButton2 = Colors.blueAccent[700];
+                            drinkButton3 = Colors.white;
+                            drinkButton4 = Colors.white;
+                            drinkButton5 = Colors.white;
+                            drinkButton6 = Colors.white;
+                            drinkButton7 = Colors.white;
+                            textButton1 = Color(0xFF0057FF);
+                            textButton2 = Colors.white;
+                            textButton3 = Color(0xFF0057FF);
+                            textButton4 = Color(0xFF0057FF);
+                            textButton5 = Color(0xFF0057FF);
+                            textButton6 = Color(0xFF0057FF);
+                            textButton7 = Color(0xFF0057FF);
+                            _currentdrink = 125;
+                          });
+                        },
+                        child: Text(
+                          "125",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Sansation",
+                            color: textButton2,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            primary: drinkButton2,
+                            elevation: 4,
+                            padding: EdgeInsets.fromLTRB(20, 5, 20, 5)),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            drinkButton1 = Colors.white;
+                            drinkButton2 = Colors.white;
+                            drinkButton3 = Colors.blueAccent[700];
+                            drinkButton4 = Colors.white;
+                            drinkButton5 = Colors.white;
+                            drinkButton6 = Colors.white;
+                            drinkButton7 = Colors.white;
+                            textButton1 = Color(0xFF0057FF);
+                            textButton2 = Color(0xFF0057FF);
+                            textButton3 = Colors.white;
+                            textButton4 = Color(0xFF0057FF);
+                            textButton5 = Color(0xFF0057FF);
+                            textButton6 = Color(0xFF0057FF);
+                            textButton7 = Color(0xFF0057FF);
+                            _currentdrink = 150;
+                          });
+                        },
+                        child: Text(
+                          "150",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Sansation",
+                            color: textButton3,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            primary: drinkButton3,
+                            elevation: 4,
+                            padding: EdgeInsets.fromLTRB(20, 5, 20, 5)),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            drinkButton1 = Colors.white;
+                            drinkButton2 = Colors.white;
+                            drinkButton3 = Colors.white;
+                            drinkButton4 = Colors.blueAccent[700];
+                            drinkButton5 = Colors.white;
+                            drinkButton6 = Colors.white;
+                            drinkButton7 = Colors.white;
+                            textButton1 = Color(0xFF0057FF);
+                            textButton2 = Color(0xFF0057FF);
+                            textButton3 = Color(0xFF0057FF);
+                            textButton4 = Colors.white;
+                            textButton5 = Color(0xFF0057FF);
+                            textButton6 = Color(0xFF0057FF);
+                            textButton7 = Color(0xFF0057FF);
+                            _currentdrink = 175;
+                          });
+                        },
+                        child: Text(
+                          "175",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Sansation",
+                            color: textButton4,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            primary: drinkButton4,
+                            elevation: 4,
+                            padding: EdgeInsets.fromLTRB(20, 5, 20, 5)),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            drinkButton1 = Colors.white;
+                            drinkButton2 = Colors.white;
+                            drinkButton3 = Colors.white;
+                            drinkButton4 = Colors.white;
+                            drinkButton5 = Colors.blueAccent[700];
+                            drinkButton6 = Colors.white;
+                            drinkButton7 = Colors.white;
+                            textButton1 = Color(0xFF0057FF);
+                            textButton2 = Color(0xFF0057FF);
+                            textButton3 = Color(0xFF0057FF);
+                            textButton4 = Color(0xFF0057FF);
+                            textButton5 = Colors.white;
+                            textButton6 = Color(0xFF0057FF);
+                            textButton7 = Color(0xFF0057FF);
+                            _currentdrink = 200;
+                          });
+                        },
+                        child: Text(
+                          "200",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Sansation",
+                            color: textButton5,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            primary: drinkButton5,
+                            elevation: 4,
+                            padding: EdgeInsets.fromLTRB(20, 5, 20, 5)),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            drinkButton1 = Colors.white;
+                            drinkButton2 = Colors.white;
+                            drinkButton3 = Colors.white;
+                            drinkButton4 = Colors.white;
+                            drinkButton5 = Colors.white;
+                            drinkButton6 = Colors.blueAccent[700];
+                            drinkButton7 = Colors.white;
+                            textButton1 = Color(0xFF0057FF);
+                            textButton2 = Color(0xFF0057FF);
+                            textButton3 = Color(0xFF0057FF);
+                            textButton4 = Color(0xFF0057FF);
+                            textButton5 = Color(0xFF0057FF);
+                            textButton6 = Colors.white;
+                            textButton7 = Color(0xFF0057FF);
+                            _currentdrink = 300;
+                          });
+                        },
+                        child: Text(
+                          "300",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Sansation",
+                            color: textButton6,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            primary: drinkButton6,
+                            elevation: 4,
+                            padding: EdgeInsets.fromLTRB(20, 5, 20, 5)),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            drinkButton1 = Colors.white;
+                            drinkButton2 = Colors.white;
+                            drinkButton3 = Colors.white;
+                            drinkButton4 = Colors.white;
+                            drinkButton5 = Colors.white;
+                            drinkButton6 = Colors.white;
+                            drinkButton7 = Colors.blueAccent[700];
+                            textButton1 = Color(0xFF0057FF);
+                            textButton2 = Color(0xFF0057FF);
+                            textButton3 = Color(0xFF0057FF);
+                            textButton4 = Color(0xFF0057FF);
+                            textButton5 = Color(0xFF0057FF);
+                            textButton6 = Color(0xFF0057FF);
+                            textButton7 = Colors.white;
+                            _currentdrink = 400;
+                          });
+                        },
+                        child: Text(
+                          "400",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Sansation",
+                            color: textButton7,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            primary: drinkButton7,
+                            elevation: 4,
+                            padding: EdgeInsets.fromLTRB(20, 5, 20, 5)),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ));
         });
