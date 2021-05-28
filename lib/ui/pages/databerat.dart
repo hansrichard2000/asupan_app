@@ -251,14 +251,14 @@ class _DataberatState extends State<Databerat> {
                                     ((0.1069 * double.parse(ctrlTinggi.text)) +
                                         (0.2466 *
                                             double.parse(ctrlBerat.text)))) /
-                                -2;
+                                2;
                           }
                           Stats stats = Stats(
                               "",
                               "",
-                              double.parse(ctrlBerat.text),
-                              double.parse(ctrlTinggi.text),
-                              double.parse(ctrlUsia.text),
+                              int.parse(ctrlBerat.text),
+                              int.parse(ctrlTinggi.text),
+                              int.parse(ctrlUsia.text),
                               175,
                               0,
                               hasil.toInt() * 100,
