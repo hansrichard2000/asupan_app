@@ -20,6 +20,7 @@ class _ProfilState extends State<Profil> {
   String usia;
   String berat;
   String tinggi;
+  String asupanMinimum;
   String waktuBangun, tidur;
   final ImagePicker imagePicker = ImagePicker();
 
@@ -171,29 +172,51 @@ class _ProfilState extends State<Profil> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(20, 10, 0, 20),
-                          child: Text(
-                            "Data Pribadi",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
+                            margin: EdgeInsets.fromLTRB(20, 10, 0, 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  child: Text(
+                                    "Data Pribadi",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(right: 20),
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {},
+                                    icon: Icon(CupertinoIcons.pencil),
+                                    label: Text(
+                                      "Edit",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "Sansation"),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xFF0057FF),
+                                      elevation: 2,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )),
                         SizedBox(
                           height: size.height / 1.5,
                           child: ListView.builder(
                               itemCount: titleList.length,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
-                                  onTap: () {
-                                    showProfileDialog(
-                                        context, titleList[index]);
-                                  },
+                                  onTap: () {},
                                   child: Card(
                                     elevation: 0,
                                     color: Color(0xFFf1fcff),
                                     child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Padding(
                                           padding: const EdgeInsets.all(10),
@@ -216,6 +239,8 @@ class _ProfilState extends State<Profil> {
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
                                             children: [
                                               FutureBuilder(
                                                 future: _fetchdata(),
@@ -228,8 +253,8 @@ class _ProfilState extends State<Profil> {
                                                     "$tinggi",
                                                     "$waktuBangun",
                                                     "$tidur",
-                                                    "",
-                                                    ""
+                                                    "ml",
+                                                    "$asupanMinimum ml",
                                                   ];
                                                   return Text(
                                                     dataList[index],
@@ -349,6 +374,7 @@ class _ProfilState extends State<Profil> {
         tinggi = ds.data()['tinggi'].toString();
         waktuBangun = ds.data()['waktuBangun'];
         tidur = ds.data()['waktuTidur'];
+        asupanMinimum = ds.data()['asupanMinimum'].toString();
       });
     }
   }
@@ -369,39 +395,39 @@ class _ProfilState extends State<Profil> {
     });
   }
 
-  void showProfileDialog(BuildContext ctx, title) {
-    showDialog(
-        context: ctx,
-        builder: (ctx) {
-          return Center(
-            child: Material(
-              type: MaterialType.transparency,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
-                padding: EdgeInsets.all(15),
-                width: MediaQuery.of(context).size.width * 0.7,
-                height: MediaQuery.of(context).size.height / 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontFamily: "Sansation",
-                        fontSize: 20,
-                        color: Color(0xFF0057FF),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-  }
+  // void showProfileDialog(BuildContext ctx, title) {
+  //   showDialog(
+  //       context: ctx,
+  //       builder: (ctx) {
+  //         return Center(
+  //           child: Material(
+  //             type: MaterialType.transparency,
+  //             child: Container(
+  //               decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(10),
+  //                 color: Colors.white,
+  //               ),
+  //               padding: EdgeInsets.all(15),
+  //               width: MediaQuery.of(context).size.width * 0.7,
+  //               height: MediaQuery.of(context).size.height / 2,
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: <Widget>[
+  //                   Text(
+  //                     title,
+  //                     style: TextStyle(
+  //                       fontFamily: "Sansation",
+  //                       fontSize: 20,
+  //                       color: Color(0xFF0057FF),
+  //                     ),
+  //                   )
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       });
+  // }
 
   void showFileDialog(BuildContext ctx) {
     showDialog(
