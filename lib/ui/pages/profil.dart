@@ -80,12 +80,14 @@ class _ProfilState extends State<Profil> {
                                 alignment: Alignment.center,
                                 child: Icon(Icons.person, size: 56),
                               ),
-                              FutureBuilder(
-                                future: _fetchimage(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot snapshot) {
-                                  return Image.network("$fotoPengguna");
-                                },
+                              Center(
+                                child: FutureBuilder(
+                                  future: _fetchimage(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot snapshot) {
+                                    return Image.network("$fotoPengguna");
+                                  },
+                                ),
                               ),
                             ],
                           )),
@@ -184,7 +186,10 @@ class _ProfilState extends State<Profil> {
                               itemCount: titleList.length,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    showProfileDialog(
+                                        context, titleList[index]);
+                                  },
                                   child: Card(
                                     elevation: 0,
                                     color: Color(0xFFf1fcff),
@@ -362,6 +367,40 @@ class _ProfilState extends State<Profil> {
     setState(() {
       imageFile = selectedImage;
     });
+  }
+
+  void showProfileDialog(BuildContext ctx, title) {
+    showDialog(
+        context: ctx,
+        builder: (ctx) {
+          return Center(
+            child: Material(
+              type: MaterialType.transparency,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                padding: EdgeInsets.all(15),
+                width: MediaQuery.of(context).size.width * 0.7,
+                height: MediaQuery.of(context).size.height / 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontFamily: "Sansation",
+                        fontSize: 20,
+                        color: Color(0xFF0057FF),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   void showFileDialog(BuildContext ctx) {

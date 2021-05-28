@@ -47,7 +47,7 @@ class _BerandaState extends State<Beranda> {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container();
+            return ActivityServices.loadings();
           }
 
           return new ListView(
@@ -127,15 +127,19 @@ class _BerandaState extends State<Beranda> {
                             future: _fetchasupan(),
                             builder:
                                 (BuildContext context, AsyncSnapshot snapshot) {
-                              double progress =
-                                  (double.parse("$asupanSementara") /
-                                      double.parse("$asupanMinimum"));
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
+                              try {
+                                double progress =
+                                    (double.parse("$asupanSementara") /
+                                        double.parse("$asupanMinimum"));
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return ActivityServices.loadings();
+                                } else {
+                                  return CustomProgressBar(
+                                      size.width / 1.9, progress * 100, 100);
+                                }
+                              } catch (e) {
                                 return ActivityServices.loadings();
-                              } else {
-                                return CustomProgressBar(
-                                    size.width / 1.9, progress * 100, 100);
                               }
                             },
                           )),
