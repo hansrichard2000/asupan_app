@@ -246,6 +246,7 @@ class _DataberatState extends State<Databerat> {
                               int.parse(ctrlBerat.text),
                               int.parse(ctrlTinggi.text),
                               int.parse(ctrlUsia.text),
+                              175,
                               0,
                               hasil.toInt() * 1000,
                               "",

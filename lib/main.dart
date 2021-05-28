@@ -5,6 +5,7 @@ import 'package:asupan_app/ui/pages/pages.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void enablePlatformOverrideForDesktop() {
   if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
@@ -15,7 +16,8 @@ void enablePlatformOverrideForDesktop() {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  initializeDateFormatting().then((_) => runApp(MyApp()));
+  // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

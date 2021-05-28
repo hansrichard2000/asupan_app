@@ -7,6 +7,11 @@ class Harian extends StatefulWidget {
 }
 
 class _HarianState extends State<Harian> {
+  var _selectedDay;
+  var _focusedDay;
+  var _calendarFormat;
+  String dateNow = ActivityServices.dateNow();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +37,52 @@ class _HarianState extends State<Harian> {
                 tileMode: TileMode.repeated)),
         child: Stack(
           children: <Widget>[
+            Container(
+              decoration: BoxDecoration(),
+              child: Card(
+                margin: EdgeInsets.all(8),
+                child: TableCalendar(
+                  firstDay: DateTime.utc(2000, 10, 16),
+                  lastDay: DateTime.utc(2230, 3, 14),
+                  focusedDay: DateTime.now(),
+                  selectedDayPredicate: (day) {
+                    return isSameDay(_selectedDay, day);
+                  },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay =
+                          focusedDay; // update `_focusedDay` here as well
+                    });
+                  },
+                  weekendDays: [6, 7],
+                  // headerStyle: HeaderStyle(decoration: BoxDecoration(color: Colors.blue[200])),
+                  calendarBuilders: CalendarBuilders(
+                    dowBuilder: (context, day) {
+                      final text = DateFormat.E().format(day);
+                      return Center(
+                        child: Text(
+                          text,
+                          style: TextStyle(color: Color(0xFF0057FF)),
+                        ),
+                      );
+                    },
+                  ),
+                  // calendarFormat: _calendarFormat,
+                  // onFormatChanged: (format) {
+                  //   setState(() {
+                  //     _calendarFormat = format;
+                  //   });
+                  // },
+                  // onPageChanged: (focusedDay) {
+                  //   _focusedDay = focusedDay;
+                  // },
+                  // eventLoader: (day) {
+                  //   return _getEventsForDay(day);
+                  // },
+                ),
+              ),
+            ),
             SizedBox.expand(
               child: DraggableScrollableSheet(
                 initialChildSize: 0.4,

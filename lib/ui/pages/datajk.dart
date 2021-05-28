@@ -145,6 +145,7 @@ class _DatajkState extends State<Datajk> {
                                   0,
                                   0,
                                   0,
+                                  0,
                                   "",
                                   "",
                                   "",
@@ -197,6 +198,7 @@ class _DatajkState extends State<Datajk> {
                                 Stats stats = Stats(
                                     FirebaseAuth.instance.currentUser.uid,
                                     "Perempuan",
+                                    0,
                                     0,
                                     0,
                                     0,

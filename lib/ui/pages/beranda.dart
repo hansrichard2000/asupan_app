@@ -29,6 +29,7 @@ class _BerandaState extends State<Beranda> {
   // final user = Provider.of<Users>(context);
   // final uid = user.uid;
   String namePengguna;
+  String minum;
   String asupanSementara;
   String asupanMinimum;
   String uid = FirebaseAuth.instance.currentUser.uid;
@@ -202,50 +203,68 @@ class _BerandaState extends State<Beranda> {
             Container(
               margin: EdgeInsets.only(bottom: size.height / 4.9),
               alignment: Alignment.center,
-              child: FloatingActionButton(
-                onPressed: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  Asupans asupans = Asupans(
-                    "",
-                    _currentdrink,
-                    FirebaseAuth.instance.currentUser.uid,
-                    "",
-                    "",
-                  );
-                  int asupanLagi;
-                  await FirebaseFirestore.instance
-                      .collection('stats')
-                      .doc(FirebaseAuth.instance.currentUser.uid)
-                      .get()
-                      .then((ds) {
-                    asupanLagi = ds.data()['asupanSementara'];
-                  });
-                  int hasil = asupanLagi + _currentdrink;
-                  print(hasil);
-                  Stats stats =
-                      Stats("", "", 0, 0, 0, hasil, 0, "", "", "", "", "");
-                  await StatsServices.updateStats(stats);
-                  await AsupanServices.addAsupan(asupans).then((value) {
-                    if (value == true) {
-                      ActivityServices.showToast(
-                          "Catatan berhasil ditambahkan", Color(0xFF0057FF));
-                      setState(() {
-                        isLoading = false;
-                      });
-                    } else {
-                      ActivityServices.showToast(
-                          "Catatan gagal ditambahkan", Colors.red);
-                      setState(() {
-                        isLoading = false;
-                      });
-                    }
-                  });
-                },
-                child: Icon(Icons.add),
-                backgroundColor: Color(0xFF0057FF),
-              ),
+              child: ElevatedButton(
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    Asupans asupans = Asupans(
+                      "",
+                      _currentdrink,
+                      FirebaseAuth.instance.currentUser.uid,
+                      "",
+                      "",
+                    );
+                    int asupanLagi;
+                    await FirebaseFirestore.instance
+                        .collection('stats')
+                        .doc(FirebaseAuth.instance.currentUser.uid)
+                        .get()
+                        .then((ds) {
+                      asupanLagi = ds.data()['asupanSementara'];
+                      _currentIndex = ds.data()['minum'];
+                    });
+                    int hasil = asupanLagi + _currentdrink;
+                    print(hasil);
+                    Stats stats = Stats(
+                      "",
+                      "",
+                      0,
+                      0,
+                      0,
+                      _currentdrink,
+                      hasil,
+                      0,
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                    );
+                    await StatsServices.updateStats(stats);
+                    await AsupanServices.addAsupan(asupans).then((value) {
+                      if (value == true) {
+                        ActivityServices.showToast(
+                            "Catatan berhasil ditambahkan", Color(0xFF0057FF));
+                        setState(() {
+                          isLoading = false;
+                        });
+                      } else {
+                        ActivityServices.showToast(
+                            "Catatan gagal ditambahkan", Colors.red);
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    });
+                  },
+                  child: FutureBuilder(
+                    future: _fetchasupan(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      return Text("+ $minum");
+                    },
+                  ),
+                  style: ElevatedButton.styleFrom(primary: Color(0xFF0057FF))),
             ),
             SizedBox.expand(
               child: DraggableScrollableSheet(
@@ -336,7 +355,7 @@ class _BerandaState extends State<Beranda> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             drinkButton1 = Colors.blueAccent[700];
                             drinkButton2 = Colors.white;
@@ -354,6 +373,22 @@ class _BerandaState extends State<Beranda> {
                             textButton7 = Color(0xFF0057FF);
                             _currentdrink = 100;
                           });
+                          Stats stats = Stats(
+                            "",
+                            "",
+                            0,
+                            0,
+                            0,
+                            _currentdrink,
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                          );
+                          await StatsServices.updateMinum(stats);
                         },
                         child: Text(
                           "100",
@@ -371,7 +406,7 @@ class _BerandaState extends State<Beranda> {
                             padding: EdgeInsets.fromLTRB(20, 5, 20, 5)),
                       ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             drinkButton1 = Colors.white;
                             drinkButton2 = Colors.blueAccent[700];
@@ -389,6 +424,22 @@ class _BerandaState extends State<Beranda> {
                             textButton7 = Color(0xFF0057FF);
                             _currentdrink = 125;
                           });
+                          Stats stats = Stats(
+                            "",
+                            "",
+                            0,
+                            0,
+                            0,
+                            _currentdrink,
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                          );
+                          await StatsServices.updateMinum(stats);
                         },
                         child: Text(
                           "125",
@@ -406,7 +457,7 @@ class _BerandaState extends State<Beranda> {
                             padding: EdgeInsets.fromLTRB(20, 5, 20, 5)),
                       ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             drinkButton1 = Colors.white;
                             drinkButton2 = Colors.white;
@@ -424,6 +475,22 @@ class _BerandaState extends State<Beranda> {
                             textButton7 = Color(0xFF0057FF);
                             _currentdrink = 150;
                           });
+                          Stats stats = Stats(
+                            "",
+                            "",
+                            0,
+                            0,
+                            0,
+                            _currentdrink,
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                          );
+                          await StatsServices.updateMinum(stats);
                         },
                         child: Text(
                           "150",
@@ -449,7 +516,7 @@ class _BerandaState extends State<Beranda> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             drinkButton1 = Colors.white;
                             drinkButton2 = Colors.white;
@@ -467,6 +534,22 @@ class _BerandaState extends State<Beranda> {
                             textButton7 = Color(0xFF0057FF);
                             _currentdrink = 175;
                           });
+                          Stats stats = Stats(
+                            "",
+                            "",
+                            0,
+                            0,
+                            0,
+                            _currentdrink,
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                          );
+                          await StatsServices.updateMinum(stats);
                         },
                         child: Text(
                           "175",
@@ -484,7 +567,7 @@ class _BerandaState extends State<Beranda> {
                             padding: EdgeInsets.fromLTRB(20, 5, 20, 5)),
                       ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             drinkButton1 = Colors.white;
                             drinkButton2 = Colors.white;
@@ -502,6 +585,22 @@ class _BerandaState extends State<Beranda> {
                             textButton7 = Color(0xFF0057FF);
                             _currentdrink = 200;
                           });
+                          Stats stats = Stats(
+                            "",
+                            "",
+                            0,
+                            0,
+                            0,
+                            _currentdrink,
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                          );
+                          await StatsServices.updateMinum(stats);
                         },
                         child: Text(
                           "200",
@@ -519,7 +618,7 @@ class _BerandaState extends State<Beranda> {
                             padding: EdgeInsets.fromLTRB(20, 5, 20, 5)),
                       ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             drinkButton1 = Colors.white;
                             drinkButton2 = Colors.white;
@@ -537,6 +636,22 @@ class _BerandaState extends State<Beranda> {
                             textButton7 = Color(0xFF0057FF);
                             _currentdrink = 300;
                           });
+                          Stats stats = Stats(
+                            "",
+                            "",
+                            0,
+                            0,
+                            0,
+                            _currentdrink,
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                          );
+                          await StatsServices.updateMinum(stats);
                         },
                         child: Text(
                           "300",
@@ -561,7 +676,7 @@ class _BerandaState extends State<Beranda> {
                   Row(
                     children: <Widget>[
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             drinkButton1 = Colors.white;
                             drinkButton2 = Colors.white;
@@ -579,6 +694,22 @@ class _BerandaState extends State<Beranda> {
                             textButton7 = Colors.white;
                             _currentdrink = 400;
                           });
+                          Stats stats = Stats(
+                            "",
+                            "",
+                            0,
+                            0,
+                            0,
+                            _currentdrink,
+                            0,
+                            0,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                          );
+                          await StatsServices.updateMinum(stats);
                         },
                         child: Text(
                           "400",
@@ -626,6 +757,7 @@ class _BerandaState extends State<Beranda> {
           .doc(pengguna)
           .get()
           .then((ds) {
+        minum = ds.data()['minum'].toString();
         asupanSementara = ds.data()['asupanSementara'].toString();
         asupanMinimum = ds.data()['asupanMinimum'].toString();
       });

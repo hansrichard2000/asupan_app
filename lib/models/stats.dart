@@ -6,6 +6,7 @@ class Stats extends Equatable {
   final int berat;
   final int tinggi;
   final int usia;
+  final int minum;
   final int asupanSementara;
   final int asupanMinimum;
   final String waktuBangun;
@@ -20,6 +21,7 @@ class Stats extends Equatable {
     this.berat,
     this.tinggi,
     this.usia,
+    this.minum,
     this.asupanSementara,
     this.asupanMinimum,
     this.waktuBangun,
@@ -37,6 +39,7 @@ class Stats extends Equatable {
         berat,
         tinggi,
         usia,
+        minum,
         asupanSementara,
         asupanMinimum,
         waktuBangun,
