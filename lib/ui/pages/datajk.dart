@@ -139,7 +139,7 @@ class _DatajkState extends State<Datajk> {
                                 });
                                 Stats stats = Stats(
                                   FirebaseAuth.instance.currentUser.uid,
-                                  "Laki=laki",
+                                  "Laki-laki",
                                   0,
                                   0,
                                   0,
@@ -152,9 +152,9 @@ class _DatajkState extends State<Datajk> {
                                   "",
                                   "",
                                 );
-                                await StatsServices.addJenisKelamin(stats).then(
-                                    (value) => ActivityServices.showToast(
-                                        "Laki-Laki", Colors.blueAccent[700]));
+                                await StatsServices.addJenisKelamin(stats);
+                                ActivityServices.showToast(
+                                    "Laki-Laki", Colors.blueAccent[700]);
                                 // isLoading = false;Z
                                 Navigator.pushReplacementNamed(
                                     context, Databerat.routeName);
@@ -209,9 +209,9 @@ class _DatajkState extends State<Datajk> {
                                     "",
                                     "",
                                     "");
-                                await StatsServices.addJenisKelamin(stats).then(
-                                    (value) => ActivityServices.showToast(
-                                        "Perempuan", Colors.red[200]));
+                                await StatsServices.addJenisKelamin(stats);
+                                ActivityServices.showToast(
+                                    "Perempuan", Colors.red[200]);
                                 Navigator.pushReplacementNamed(
                                     context, Databerat.routeName);
                               },

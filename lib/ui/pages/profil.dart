@@ -188,7 +188,10 @@ class _ProfilState extends State<Profil> {
                                 Container(
                                   margin: EdgeInsets.only(right: 20),
                                   child: ElevatedButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, UpdateProfil.routeName);
+                                    },
                                     icon: Icon(CupertinoIcons.pencil),
                                     label: Text(
                                       "Edit",

@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
         Alarm.routeName: (context) => Alarm(),
         Profil.routeName: (context) => Profil(),
         Harian.routeName: (context) => Harian(),
+        UpdateProfil.routeName: (context) => UpdateProfil(),
       },
     );
   }

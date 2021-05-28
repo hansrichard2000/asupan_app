@@ -33,4 +33,4 @@ part 'riwayat.dart';
 part 'alarm.dart';
 part 'profil.dart';
 part 'harian.dart';
-part 'editprofil.dart';
+part 'updateprofil.dart';

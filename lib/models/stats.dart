@@ -3,9 +3,9 @@ part of 'models.dart';
 class Stats extends Equatable {
   final String userid;
   final String jenisKelamin;
-  final int berat;
-  final int tinggi;
-  final int usia;
+  final double berat;
+  final double tinggi;
+  final double usia;
   final int minum;
   final int asupanSementara;
   final int asupanMinimum;

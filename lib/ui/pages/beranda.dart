@@ -261,7 +261,11 @@ class _BerandaState extends State<Beranda> {
                   child: FutureBuilder(
                     future: _fetchasupan(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      return Text("+ $minum");
+                      return Text("+ $minum ml",
+                          style: TextStyle(
+                            fontFamily: "Sansation",
+                            fontSize: 20,
+                          ));
                     },
                   ),
                   style: ElevatedButton.styleFrom(primary: Color(0xFF0057FF))),

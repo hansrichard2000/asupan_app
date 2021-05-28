@@ -11,6 +11,7 @@ class _DataberatState extends State<Databerat> {
   final ctrlBerat = TextEditingController();
   final ctrlTinggi = TextEditingController();
   final ctrlUsia = TextEditingController();
+  double hasil;
   bool isVisible = true;
   bool isLoading = false;
   @override
@@ -228,27 +229,39 @@ class _DataberatState extends State<Databerat> {
                           setState(() {
                             isLoading = true;
                           });
-                          double hasil = (2.447 -
-                                  (0.09145 * double.parse(ctrlUsia.text) +
-                                      (0.1074 * double.parse(ctrlTinggi.text)) +
-                                      (0.3362 *
-                                          double.parse(ctrlBerat.text)))) /
-                              ((2.447 -
-                                      (0.09145 * double.parse(ctrlUsia.text) +
-                                          (0.1074 *
-                                              double.parse(ctrlTinggi.text)) +
-                                          (0.3362 *
-                                              double.parse(ctrlBerat.text)))) *
-                                  0.5);
+                          String jk;
+                          await FirebaseFirestore.instance
+                              .collection('stats')
+                              .doc(FirebaseAuth.instance.currentUser.uid)
+                              .get()
+                              .then((ds) {
+                            jk = ds.data()['jenisKelamin'];
+                          });
+                          if ("$jk" == "Laki-laki") {
+                            print("$jk");
+                            hasil = (2.447 -
+                                    ((0.09145 * double.parse(ctrlUsia.text)) +
+                                        (0.1074 *
+                                            double.parse(ctrlTinggi.text)) +
+                                        (0.3362 *
+                                            double.parse(ctrlBerat.text)))) /
+                                -2;
+                          } else if ("$jk" == "Perempuan") {
+                            hasil = (-2.097 +
+                                    ((0.1069 * double.parse(ctrlTinggi.text)) +
+                                        (0.2466 *
+                                            double.parse(ctrlBerat.text)))) /
+                                -2;
+                          }
                           Stats stats = Stats(
                               "",
                               "",
-                              int.parse(ctrlBerat.text),
-                              int.parse(ctrlTinggi.text),
-                              int.parse(ctrlUsia.text),
+                              double.parse(ctrlBerat.text),
+                              double.parse(ctrlTinggi.text),
+                              double.parse(ctrlUsia.text),
                               175,
                               0,
-                              hasil.toInt() * 1000,
+                              hasil.toInt() * 100,
                               "",
                               "",
                               "",
