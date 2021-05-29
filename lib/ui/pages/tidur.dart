@@ -160,6 +160,14 @@ class _TidurState extends State<Tidur> {
                           isLoading = true;
                         });
                         final tidur = DateFormat('HH:mm').format(dateTime);
+                        Riwayats riwayats = Riwayats(
+                          "",
+                          0,
+                          "",
+                          "",
+                          "",
+                          "",
+                        );
                         Stats stats = Stats(
                           "",
                           "",
@@ -174,7 +182,9 @@ class _TidurState extends State<Tidur> {
                           "",
                           "",
                           "",
+                          "",
                         );
+                        await AsupanServices.addRiwayat(riwayats);
                         await StatsServices.AddWaktuTidur(stats).then((value) =>
                             ActivityServices.showToast(tidur, Colors.green));
 

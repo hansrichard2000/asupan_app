@@ -254,19 +254,21 @@ class _DataberatState extends State<Databerat> {
                                 2;
                           }
                           Stats stats = Stats(
-                              "",
-                              "",
-                              int.parse(ctrlBerat.text),
-                              int.parse(ctrlTinggi.text),
-                              int.parse(ctrlUsia.text),
-                              175,
-                              0,
-                              hasil.toInt() * 100,
-                              "",
-                              "",
-                              "",
-                              "",
-                              "");
+                            "",
+                            "",
+                            int.parse(ctrlBerat.text),
+                            int.parse(ctrlTinggi.text),
+                            int.parse(ctrlUsia.text),
+                            175,
+                            0,
+                            hasil.toInt() * 100,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                          );
                           await StatsServices.addDataTubuh(stats).then(
                               (value) => ActivityServices.showToast(
                                   "Berhasil Disimpan", Colors.green));

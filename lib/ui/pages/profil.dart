@@ -487,11 +487,11 @@ class _ProfilState extends State<Profil> {
                   await AuthServices.ubahNama(users).then((value) {
                     print(value);
                     if (value == "success") {
-                      ActivityServices.showToast(
-                          "Ubah nama berhasil", Colors.green);
                       setState(() {
                         isLoading = false;
                       });
+                      ActivityServices.showToast(
+                          "Ubah nama berhasil", Colors.green);
                     } else {
                       setState(() {
                         isLoading = false;

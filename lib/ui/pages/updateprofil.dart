@@ -195,7 +195,9 @@ class _UpdateProfilState extends State<UpdateProfil> {
                                     });
                                     print(_gender);
                                     if (_gender == Gender.Lakilaki) {
-                                      jk = "Laki-laki";
+                                      setState(() {
+                                        jk = "Laki-laki";
+                                      });
                                       hasil = (2.447 -
                                               ((0.09145 *
                                                       double.parse(
@@ -219,21 +221,24 @@ class _UpdateProfilState extends State<UpdateProfil> {
                                                           ctrlBerat.text)))) /
                                           2;
                                       print(hasil);
+                                      print(jk);
                                     }
                                     Stats stats = Stats(
-                                        "",
-                                        jk,
-                                        int.parse(ctrlBerat.text),
-                                        int.parse(ctrlTinggi.text),
-                                        int.parse(ctrlUsia.text),
-                                        0,
-                                        0,
-                                        hasil.toInt() * 100,
-                                        "",
-                                        "",
-                                        "",
-                                        "",
-                                        "");
+                                      "",
+                                      jk,
+                                      int.parse(ctrlBerat.text),
+                                      int.parse(ctrlTinggi.text),
+                                      int.parse(ctrlUsia.text),
+                                      0,
+                                      0,
+                                      hasil.toInt() * 100,
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                      "",
+                                    );
                                     await StatsServices.EditDataTubuh(stats)
                                         .then((value) =>
                                             ActivityServices.showToast(

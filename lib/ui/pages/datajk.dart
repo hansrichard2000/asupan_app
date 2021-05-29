@@ -151,6 +151,7 @@ class _DatajkState extends State<Datajk> {
                                   "",
                                   "",
                                   "",
+                                  "",
                                 );
                                 await StatsServices.addJenisKelamin(stats);
                                 ActivityServices.showToast(
@@ -196,19 +197,21 @@ class _DatajkState extends State<Datajk> {
                                   buttonMale = false;
                                 });
                                 Stats stats = Stats(
-                                    FirebaseAuth.instance.currentUser.uid,
-                                    "Perempuan",
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "");
+                                  FirebaseAuth.instance.currentUser.uid,
+                                  "Perempuan",
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  0,
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                );
                                 await StatsServices.addJenisKelamin(stats);
                                 ActivityServices.showToast(
                                     "Perempuan", Colors.red[200]);

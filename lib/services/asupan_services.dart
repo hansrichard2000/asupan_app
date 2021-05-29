@@ -5,6 +5,8 @@ class AsupanServices {
   //setup cloud firestore
   static CollectionReference asupanCollection =
       FirebaseFirestore.instance.collection("asupan");
+  static CollectionReference riwayatCollection =
+      FirebaseFirestore.instance.collection("riwayat");
   static DocumentReference asupanDocument;
 
   static Future<bool> addAsupan(Asupans asupans) async {
@@ -26,5 +28,29 @@ class AsupanServices {
     }
 
     return true;
+  }
+
+  static Future<bool> addRiwayat(Riwayats riwayats) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+    String dateToday = ActivityServices.dateToday();
+    await riwayatCollection.doc(dateToday + auth.currentUser.uid).set({
+      "riwayatid": dateToday + auth.currentUser.uid,
+      "asupanAkhir": riwayats.asupanAkhir,
+      "addBy": auth.currentUser.uid,
+      "dateToday": dateToday,
+      "createdAt": dateNow,
+      "updatedAt": dateNow,
+    });
+  }
+
+  static Future<bool> editRiwayat(Riwayats riwayats) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+    String dateToday = ActivityServices.dateToday();
+    await riwayatCollection.doc(dateToday + auth.currentUser.uid).update({
+      "asupanAkhir": riwayats.asupanAkhir,
+      "updatedAt": dateNow,
+    });
   }
 }

@@ -14,6 +14,7 @@ class Stats extends Equatable {
   final String foto;
   final String createdAt;
   final String updatedAt;
+  final String dateUpdated;
 
   Stats(
     this.userid,
@@ -29,6 +30,7 @@ class Stats extends Equatable {
     this.foto,
     this.createdAt,
     this.updatedAt,
+    this.dateUpdated,
   );
 
   @override
@@ -47,5 +49,6 @@ class Stats extends Equatable {
         foto,
         createdAt,
         updatedAt,
+        dateUpdated,
       ];
 }

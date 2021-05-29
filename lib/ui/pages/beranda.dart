@@ -9,6 +9,7 @@ class Beranda extends StatefulWidget {
 class _BerandaState extends State<Beranda> {
   int _currentIndex = 0;
   int _currentdrink = 175;
+  final ctrlAsupan = TextEditingController();
   // dynamic name = AuthServices.getUsersName();
   final log = Logger();
   bool isLoading = false;
@@ -32,6 +33,7 @@ class _BerandaState extends State<Beranda> {
   String minum;
   String asupanSementara;
   String asupanMinimum;
+  String tanggalSekarang;
   String dateToday = ActivityServices.dateToday();
   String dateNow = ActivityServices.dateNow();
   String uid = FirebaseAuth.instance.currentUser.uid;
@@ -247,8 +249,18 @@ class _BerandaState extends State<Beranda> {
                       "",
                       "",
                       "",
+                      "",
+                    );
+                    Riwayats riwayats = Riwayats(
+                      "",
+                      hasil,
+                      "",
+                      "",
+                      "",
+                      "",
                     );
                     await StatsServices.updateStats(stats);
+                    await AsupanServices.editRiwayat(riwayats);
                     await AsupanServices.addAsupan(asupans).then((value) {
                       if (value == true) {
                         ActivityServices.showToast(
@@ -314,12 +326,22 @@ class _BerandaState extends State<Beranda> {
                         ),
                         Container(
                           margin: EdgeInsets.fromLTRB(15, 15, 0, 5),
-                          child: Text(
-                            "Catatan minum hari ini:",
-                            style: TextStyle(
-                              fontFamily: 'Sansation',
-                              fontSize: 20,
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Catatan minum hari ini:",
+                                style: TextStyle(
+                                  fontFamily: 'Sansation',
+                                  fontSize: 20,
+                                ),
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    showAsupanDialog(context);
+                                  },
+                                  icon: Icon(Icons.add))
+                            ],
                           ),
                         ),
                         buildBody(),
@@ -398,6 +420,7 @@ class _BerandaState extends State<Beranda> {
                             "",
                             "",
                             "",
+                            "",
                           );
                           await StatsServices.updateMinum(stats);
                         },
@@ -449,6 +472,7 @@ class _BerandaState extends State<Beranda> {
                             "",
                             "",
                             "",
+                            "",
                           );
                           await StatsServices.updateMinum(stats);
                         },
@@ -495,6 +519,7 @@ class _BerandaState extends State<Beranda> {
                             _currentdrink,
                             0,
                             0,
+                            "",
                             "",
                             "",
                             "",
@@ -559,6 +584,7 @@ class _BerandaState extends State<Beranda> {
                             "",
                             "",
                             "",
+                            "",
                           );
                           await StatsServices.updateMinum(stats);
                         },
@@ -610,6 +636,7 @@ class _BerandaState extends State<Beranda> {
                             "",
                             "",
                             "",
+                            "",
                           );
                           await StatsServices.updateMinum(stats);
                         },
@@ -656,6 +683,7 @@ class _BerandaState extends State<Beranda> {
                             _currentdrink,
                             0,
                             0,
+                            "",
                             "",
                             "",
                             "",
@@ -719,6 +747,7 @@ class _BerandaState extends State<Beranda> {
                             "",
                             "",
                             "",
+                            "",
                           );
                           await StatsServices.updateMinum(stats);
                         },
@@ -771,7 +800,131 @@ class _BerandaState extends State<Beranda> {
         minum = ds.data()['minum'].toString();
         asupanSementara = ds.data()['asupanSementara'].toString();
         asupanMinimum = ds.data()['asupanMinimum'].toString();
+        tanggalSekarang = ds.data()['dateUpdated'].toString();
+        print("$tanggalSekarang");
+        print("Hari ini" + dateToday);
       });
+      if ("$tanggalSekarang" != dateToday) {
+        Stats stats = Stats(
+          "",
+          "",
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+        );
+        Riwayats riwayats = Riwayats(
+          "",
+          0,
+          "",
+          "",
+          "",
+          "",
+        );
+        await StatsServices.resetStats(stats);
+        await AsupanServices.addRiwayat(riwayats);
+      }
     }
+  }
+
+  void showAsupanDialog(BuildContext ctx) async {
+    showDialog(
+        context: ctx,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text("Tambah Asupan Manual"),
+            content: TextFormField(
+              controller: ctrlAsupan,
+              decoration: InputDecoration(
+                  labelText: "Asupan Anda",
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue))),
+            ),
+            actions: [
+              ElevatedButton.icon(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  int asupanLagi;
+                  await FirebaseFirestore.instance
+                      .collection('stats')
+                      .doc(FirebaseAuth.instance.currentUser.uid)
+                      .get()
+                      .then((ds) {
+                    asupanLagi = ds.data()['asupanSementara'];
+                    minum = ds.data()['minum'].toString();
+                    _currentdrink = int.parse(ctrlAsupan.text);
+                  });
+                  int hasil = asupanLagi + _currentdrink;
+                  print(hasil);
+                  Asupans asupans = Asupans(
+                    "",
+                    _currentdrink,
+                    FirebaseAuth.instance.currentUser.uid,
+                    "",
+                    "",
+                    "",
+                  );
+                  _currentdrink = int.parse("$minum");
+                  Stats stats = Stats(
+                    "",
+                    "",
+                    0,
+                    0,
+                    0,
+                    _currentdrink,
+                    hasil,
+                    0,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                  );
+                  Riwayats riwayats = Riwayats(
+                    "",
+                    hasil,
+                    "",
+                    "",
+                    "",
+                    "",
+                  );
+                  await StatsServices.updateStats(stats);
+                  await AsupanServices.editRiwayat(riwayats);
+                  await AsupanServices.addAsupan(asupans).then((value) {
+                    if (value == true) {
+                      ActivityServices.showToast(
+                          "Catatan berhasil ditambahkan", Color(0xFF0057FF));
+                      setState(() {
+                        isLoading = false;
+                      });
+                    } else {
+                      ActivityServices.showToast(
+                          "Catatan gagal ditambahkan", Colors.red);
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
+                  });
+
+                  Navigator.pushReplacementNamed(context, MainMenu.routeName);
+                },
+                icon: Icon(Icons.save),
+                label: Text("Save"),
+                style: ElevatedButton.styleFrom(elevation: 0),
+              )
+            ],
+          );
+        });
   }
 }

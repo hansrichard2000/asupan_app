@@ -16,6 +16,7 @@ class StatsServices {
   static Future<bool> addJenisKelamin(Stats stats) async {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
+    String dateToday = ActivityServices.dateToday();
     await productCollection.doc(auth.currentUser.uid).set({
       'statsId': auth.currentUser.uid,
       'jenisKelamin': stats.jenisKelamin,
@@ -26,7 +27,8 @@ class StatsServices {
       'waktuTidur': stats.waktuTidur,
       'fotoPengguna': stats.foto,
       'createdAt': dateNow,
-      'updatedAt': dateNow
+      'updatedAt': dateNow,
+      'dateUpdated': dateToday,
     });
   }
 
@@ -35,7 +37,6 @@ class StatsServices {
     String dateNow = ActivityServices.dateNow();
 
     await productCollection.doc(auth.currentUser.uid).update({
-      'jenisKelamin': stats.jenisKelamin,
       'berat': stats.berat,
       'tinggi': stats.tinggi,
       'usia': stats.usia,
@@ -50,6 +51,7 @@ class StatsServices {
     String dateNow = ActivityServices.dateNow();
 
     await productCollection.doc(auth.currentUser.uid).update({
+      'jenisKelamin': stats.jenisKelamin,
       'berat': stats.berat,
       'tinggi': stats.tinggi,
       'usia': stats.usia,
@@ -107,6 +109,19 @@ class StatsServices {
       'minum': stats.minum,
       'asupanSementara': stats.asupanSementara,
       'updatedAt': dateNow,
+    });
+
+    return true;
+  }
+
+  static Future<bool> resetStats(Stats stats) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+    String dateToday = ActivityServices.dateToday();
+    await productCollection.doc(auth.currentUser.uid).update({
+      'asupanSementara': stats.asupanSementara,
+      'updatedAt': dateNow,
+      'dateUpdated': dateToday,
     });
 
     return true;

@@ -176,6 +176,7 @@ class _BangunState extends State<Bangun> {
                           "",
                           "",
                           "",
+                          "",
                         );
                         await StatsServices.AddWaktuBangun(stats).then(
                             (value) => ActivityServices.showToast(
