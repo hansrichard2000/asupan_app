@@ -10,7 +10,7 @@ class _ProfilState extends State<Profil> {
   String uid = FirebaseAuth.instance.currentUser.uid;
   CollectionReference statsCollection =
       FirebaseFirestore.instance.collection("stats");
-
+  final ctrlName = TextEditingController();
   bool isLoading = false;
   PickedFile imageFile;
   String namaPengguna;
@@ -99,25 +99,42 @@ class _ProfilState extends State<Profil> {
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  alignment: Alignment.topCenter,
-                  child: FutureBuilder(
-                    future: _fetchnama(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      return Text(
-                        "$namaPengguna",
-                        style: TextStyle(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.fromLTRB(50, 10, 0, 0),
+                      alignment: Alignment.topCenter,
+                      child: FutureBuilder(
+                        future: _fetchnama(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          return Text(
+                            "$namaPengguna",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Sansation",
+                              fontSize: 16,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        onPressed: () {
+                          showNameDialog(context);
+                        },
+                        icon: Icon(
+                          CupertinoIcons.pencil,
                           color: Colors.white,
-                          fontFamily: "Sansation",
-                          fontSize: 16,
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10),
                   alignment: Alignment.topCenter,
                   child: FutureBuilder(
                     future: _fetchemail(),
@@ -431,6 +448,67 @@ class _ProfilState extends State<Profil> {
   //         );
   //       });
   // }
+  void showNameDialog(BuildContext ctx) async {
+    showDialog(
+        context: ctx,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text("Edit your name"),
+            content: TextFormField(
+              controller: ctrlName,
+              decoration: InputDecoration(
+                  labelText: "Nama",
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue))),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return "Bagian ini wajib diisi";
+                } else {
+                  return value.length > 30 ? "Nama maksimum 30 karakter" : null;
+                }
+              },
+            ),
+            actions: [
+              ElevatedButton.icon(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  Users users = new Users(
+                    "",
+                    ctrlName.text,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                  );
+                  await AuthServices.ubahNama(users).then((value) {
+                    print(value);
+                    if (value == "success") {
+                      ActivityServices.showToast(
+                          "Ubah nama berhasil", Colors.green);
+                      setState(() {
+                        isLoading = false;
+                      });
+                    } else {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      ActivityServices.showToast("Gagal ubah nama", Colors.red);
+                    }
+                  });
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.save),
+                label: Text("Save"),
+                style: ElevatedButton.styleFrom(elevation: 0),
+              )
+            ],
+          );
+        });
+  }
 
   void showFileDialog(BuildContext ctx) {
     showDialog(

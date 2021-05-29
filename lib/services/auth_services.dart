@@ -66,6 +66,23 @@ class AuthServices {
     return msg;
   }
 
+  static Future<String> ubahNama(Users users) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+    String msg;
+
+    await userCollection.doc(auth.currentUser.uid).update({
+      'name': users.name,
+      'updatedAt': dateNow,
+    }).then((value) {
+      msg = "success";
+    }).catchError((onError) {
+      msg = onError;
+    });
+
+    return msg;
+  }
+
   static Future<bool> signOut() async {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();

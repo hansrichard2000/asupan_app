@@ -35,10 +35,24 @@ class StatsServices {
     String dateNow = ActivityServices.dateNow();
 
     await productCollection.doc(auth.currentUser.uid).update({
+      'jenisKelamin': stats.jenisKelamin,
       'berat': stats.berat,
       'tinggi': stats.tinggi,
       'usia': stats.usia,
       'minum': stats.minum,
+      'asupanMinimum': stats.asupanMinimum,
+      'updatedAt': dateNow
+    });
+  }
+
+  static Future<bool> EditDataTubuh(Stats stats) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+
+    await productCollection.doc(auth.currentUser.uid).update({
+      'berat': stats.berat,
+      'tinggi': stats.tinggi,
+      'usia': stats.usia,
       'asupanSementara': stats.asupanSementara,
       'asupanMinimum': stats.asupanMinimum,
       'updatedAt': dateNow

@@ -88,8 +88,8 @@ class _RegisterState extends State<Register> {
                                 if (value.isEmpty) {
                                   return "Bagian ini wajib diisi";
                                 } else {
-                                  return value.length > 12
-                                      ? "Nama maksimum 12 karakter"
+                                  return value.length > 30
+                                      ? "Nama maksimum 30 karakter"
                                       : null;
                                 }
                               },
