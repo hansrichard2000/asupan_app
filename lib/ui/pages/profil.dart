@@ -279,7 +279,7 @@ class _ProfilState extends State<Profil> {
                                                   return Text(
                                                     dataList[index],
                                                     style: TextStyle(
-                                                      color: Colors.black,
+                                                      color: Color(0xFF0057FF),
                                                       fontFamily: "Sansation",
                                                       fontSize: 16,
                                                     ),

@@ -32,6 +32,8 @@ class _BerandaState extends State<Beranda> {
   String minum;
   String asupanSementara;
   String asupanMinimum;
+  String dateToday = ActivityServices.dateToday();
+  String dateNow = ActivityServices.dateNow();
   String uid = FirebaseAuth.instance.currentUser.uid;
   CollectionReference asupanCollection =
       FirebaseFirestore.instance.collection("asupan");
@@ -41,7 +43,10 @@ class _BerandaState extends State<Beranda> {
       width: double.infinity,
       height: MediaQuery.of(context).size.height / 1.45,
       child: StreamBuilder<QuerySnapshot>(
-        stream: asupanCollection.where('addBy', isEqualTo: uid).snapshots(),
+        stream: asupanCollection
+            .where('addBy', isEqualTo: uid)
+            .where('dateToday', isEqualTo: dateToday)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Failed to load data");
@@ -57,6 +62,7 @@ class _BerandaState extends State<Beranda> {
                 doc.data()['asupanid'],
                 doc.data()['jumlah'],
                 doc.data()['addBy'],
+                doc.data()['dateToday'],
                 doc.data()['createdAt'],
                 doc.data()['updatedAt'],
               );
@@ -212,6 +218,7 @@ class _BerandaState extends State<Beranda> {
                       "",
                       _currentdrink,
                       FirebaseAuth.instance.currentUser.uid,
+                      "",
                       "",
                       "",
                     );

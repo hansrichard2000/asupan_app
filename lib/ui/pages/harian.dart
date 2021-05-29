@@ -14,6 +14,7 @@ class _HarianState extends State<Harian> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.dark,
@@ -85,8 +86,8 @@ class _HarianState extends State<Harian> {
             ),
             SizedBox.expand(
               child: DraggableScrollableSheet(
-                initialChildSize: 0.4,
-                minChildSize: 0.4,
+                initialChildSize: 0.25,
+                minChildSize: 0.25,
                 maxChildSize: 1,
                 builder: (BuildContext c, s) {
                   return Container(
@@ -115,6 +116,16 @@ class _HarianState extends State<Harian> {
                             decoration: BoxDecoration(
                               color: Colors.grey,
                               borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(15, 15, 0, 5),
+                          child: Text(
+                            "Catatan minum hari ini:",
+                            style: TextStyle(
+                              fontFamily: 'Sansation',
+                              fontSize: 20,
                             ),
                           ),
                         ),

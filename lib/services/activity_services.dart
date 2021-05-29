@@ -8,6 +8,13 @@ class ActivityServices {
     return hasil;
   }
 
+  static String dateToday() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String hasil = formatter.format(now);
+    return hasil;
+  }
+
   static void showToast(String text, Color mycolor) {
     Fluttertoast.showToast(
       msg: text,

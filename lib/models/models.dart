@@ -4,3 +4,4 @@ part 'users.dart';
 part 'stats.dart';
 part 'asupans.dart';
 part 'alarms.dart';
+part 'riwayats.dart';
