@@ -53,4 +53,16 @@ class AsupanServices {
       "updatedAt": dateNow,
     });
   }
+
+  static Future<bool> deleteAsupan(String id) async {
+    bool hsl = true;
+    await Firebase.initializeApp();
+    await asupanCollection.doc(id).delete().then((value) {
+      hsl = true;
+    }).catchError((onError) {
+      hsl = false;
+    });
+
+    return hsl;
+  }
 }

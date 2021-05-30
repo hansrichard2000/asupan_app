@@ -2,15 +2,85 @@ part of 'pages.dart';
 
 class Harian extends StatefulWidget {
   static const String routeName = "/harian";
+
   @override
   _HarianState createState() => _HarianState();
 }
 
 class _HarianState extends State<Harian> {
-  var _selectedDay;
-  var _focusedDay;
-  var _calendarFormat;
+  CalendarFormat format = CalendarFormat.month;
+  DateTime selectedDay = DateTime.now();
+  var formatter = new DateFormat('yyyy-MM-dd');
+  DateTime focusedDay = DateTime.now();
+  // var _calendarFormat;
+  String dateToday = ActivityServices.dateToday();
   String dateNow = ActivityServices.dateNow();
+  String uid = FirebaseAuth.instance.currentUser.uid;
+  CollectionReference asupanCollection =
+      FirebaseFirestore.instance.collection("asupan");
+  CollectionReference riwayatCollection =
+      FirebaseFirestore.instance.collection("riwayat");
+  bool isLoading;
+  String asupanAkhir;
+
+  _fetchriwayat() async {
+    String documentName = formatter.format(focusedDay) + uid;
+    if (uid != null) {
+      await FirebaseFirestore.instance
+          .collection('riwayat')
+          .doc(documentName)
+          .get()
+          .then((ds) {
+        asupanAkhir = ds.data()['asupanAkhir'].toString();
+      });
+    }
+  }
+
+  // _fetchriwayat() {
+  //   String documentName = formatter.format(focusedDay) + uid;
+  //   if (uid != null) {
+  //     FirebaseFirestore.instance
+  //         .collection('riwayat')
+  //         .where('riwayatid', isEqualTo: documentName)
+  //         .snapshots();
+  //   }
+  // }
+
+  Widget buildBody() {
+    return Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height / 1.45,
+      child: StreamBuilder<QuerySnapshot>(
+        stream: asupanCollection
+            .where('addBy', isEqualTo: uid)
+            .where('dateToday', isEqualTo: formatter.format(focusedDay))
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Failed to load data");
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return ActivityServices.loadings();
+          }
+
+          return new ListView(
+            children: snapshot.data.docs.map((DocumentSnapshot doc) {
+              Asupans asupans = new Asupans(
+                doc.data()['asupanid'],
+                doc.data()['jumlah'],
+                doc.data()['addBy'],
+                doc.data()['dateToday'],
+                doc.data()['createdAt'],
+                doc.data()['updatedAt'],
+              );
+              return AsupanCard(asupans: asupans);
+            }).toList(),
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,21 +113,42 @@ class _HarianState extends State<Harian> {
               child: Card(
                 margin: EdgeInsets.all(8),
                 child: TableCalendar(
-                  firstDay: DateTime.utc(2000, 10, 16),
-                  lastDay: DateTime.utc(2230, 3, 14),
-                  focusedDay: DateTime.now(),
-                  selectedDayPredicate: (day) {
-                    return isSameDay(_selectedDay, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
+                  firstDay: DateTime.utc(2000, 1, 1),
+                  lastDay: DateTime.utc(2230, 12, 31),
+                  focusedDay: focusedDay,
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  calendarFormat: format,
+                  onFormatChanged: (_format) {
                     setState(() {
-                      _selectedDay = selectedDay;
-                      _focusedDay =
-                          focusedDay; // update `_focusedDay` here as well
+                      format = _format;
                     });
                   },
-                  weekendDays: [6, 7],
-                  // headerStyle: HeaderStyle(decoration: BoxDecoration(color: Colors.blue[200])),
+                  daysOfWeekVisible: true,
+                  onDaySelected: (DateTime selectDay, DateTime focusDay) {
+                    setState(() {
+                      selectedDay = selectDay;
+                      focusedDay = focusDay;
+                    });
+                    print(formatter.format(focusedDay));
+                  },
+                  calendarStyle: CalendarStyle(
+                      isTodayHighlighted: true,
+                      todayDecoration: BoxDecoration(
+                        color: Colors.blue[900],
+                        shape: BoxShape.circle,
+                      ),
+                      selectedDecoration: BoxDecoration(
+                          color: Colors.blueAccent[700],
+                          shape: BoxShape.circle),
+                      selectedTextStyle: TextStyle(color: Colors.white)),
+                  selectedDayPredicate: (DateTime date) {
+                    return isSameDay(selectedDay, date);
+                  },
+                  headerStyle: HeaderStyle(
+                    titleTextStyle:
+                        TextStyle(fontFamily: "Sansation", fontSize: 20),
+                    formatButtonTextStyle: TextStyle(fontFamily: "Sansation"),
+                  ),
                   calendarBuilders: CalendarBuilders(
                     dowBuilder: (context, day) {
                       final text = DateFormat.E().format(day);
@@ -69,18 +160,6 @@ class _HarianState extends State<Harian> {
                       );
                     },
                   ),
-                  // calendarFormat: _calendarFormat,
-                  // onFormatChanged: (format) {
-                  //   setState(() {
-                  //     _calendarFormat = format;
-                  //   });
-                  // },
-                  // onPageChanged: (focusedDay) {
-                  //   _focusedDay = focusedDay;
-                  // },
-                  // eventLoader: (day) {
-                  //   return _getEventsForDay(day);
-                  // },
                 ),
               ),
             ),
@@ -120,15 +199,24 @@ class _HarianState extends State<Harian> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(15, 15, 0, 5),
-                          child: Text(
-                            "Catatan minum hari ini:",
-                            style: TextStyle(
-                              fontFamily: 'Sansation',
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
+                            margin: EdgeInsets.fromLTRB(15, 15, 0, 5),
+                            child: FutureBuilder(
+                                future: _fetchriwayat(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  return Text(
+                                    "Anda telah minum sebesar $asupanAkhir ml",
+                                    style: TextStyle(
+                                      fontFamily: 'Sansation',
+                                      fontSize: 20,
+                                      color: Color(0xFF0057FF),
+                                    ),
+                                  );
+                                })),
+                        buildBody(),
+                        isLoading == true
+                            ? ActivityServices.loadings()
+                            : Container()
                       ],
                     ),
                   );
