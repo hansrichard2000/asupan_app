@@ -32,6 +32,10 @@ class _HarianState extends State<Harian> {
           .get()
           .then((ds) {
         asupanAkhir = ds.data()['asupanAkhir'].toString();
+        print("$asupanAkhir");
+        if ("$asupanAkhir" == null) {
+          asupanAkhir = "0";
+        }
       });
     }
   }

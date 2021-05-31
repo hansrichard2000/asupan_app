@@ -48,10 +48,13 @@ class _BerandaState extends State<Beranda> {
         stream: asupanCollection
             .where('addBy', isEqualTo: uid)
             .where('dateToday', isEqualTo: dateToday)
+            // .orderBy('createdAt', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text("Failed to load data");
+            return Container(
+                margin: EdgeInsets.only(left: 20),
+                child: Text("Failed to load data"));
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {

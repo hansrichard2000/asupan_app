@@ -207,7 +207,12 @@ class _ProfilState extends State<Profil> {
                                   child: ElevatedButton.icon(
                                     onPressed: () {
                                       Navigator.pushNamed(
-                                          context, UpdateProfil.routeName);
+                                          context, UpdateProfil.routeName,
+                                          arguments: {
+                                            'berat': '$berat',
+                                            'tinggi': '$tinggi',
+                                            'usia': '$usia',
+                                          });
                                     },
                                     icon: Icon(CupertinoIcons.pencil),
                                     label: Text(
@@ -221,7 +226,7 @@ class _ProfilState extends State<Profil> {
                                       elevation: 2,
                                     ),
                                   ),
-                                )
+                                ),
                               ],
                             )),
                         SizedBox(

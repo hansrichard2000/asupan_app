@@ -12,17 +12,26 @@ class _UpdateProfilState extends State<UpdateProfil> {
   Gender _gender = Gender.Lakilaki;
   final _formKey = GlobalKey<FormState>();
   // String ctrlJK;
-  final ctrlBerat = TextEditingController();
-  final ctrlTinggi = TextEditingController();
-  final ctrlUsia = TextEditingController();
+
   String jk;
   double hasil;
   bool isVisible = true;
   bool isLoading = false;
-
+  Map data = {};
   @override
   Widget build(BuildContext context) {
+    data = ModalRoute.of(context).settings.arguments;
+    print(data);
     final size = MediaQuery.of(context).size;
+    TextEditingController ctrlBerat =
+        new TextEditingController(text: data['berat']);
+    TextEditingController ctrlTinggi =
+        new TextEditingController(text: data['tinggi']);
+    TextEditingController ctrlUsia =
+        new TextEditingController(text: data['usia']);
+    // final ctrlBerat = TextEditingController();
+    // final ctrlTinggi = TextEditingController();
+    // final ctrlUsia = TextEditingController();
     return Scaffold(
         appBar: AppBar(
           brightness: Brightness.dark,
@@ -246,7 +255,9 @@ class _UpdateProfilState extends State<UpdateProfil> {
                                                 Colors.green));
                                     isLoading = false;
                                     Navigator.pushReplacementNamed(
-                                        context, MainMenu.routeName);
+                                      context,
+                                      MainMenu.routeName,
+                                    );
                                   } else {
                                     Fluttertoast.showToast(
                                         msg: "Masih ada data yang kosong!");

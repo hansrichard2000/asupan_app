@@ -55,7 +55,6 @@ class StatsServices {
       'berat': stats.berat,
       'tinggi': stats.tinggi,
       'usia': stats.usia,
-      'asupanSementara': stats.asupanSementara,
       'asupanMinimum': stats.asupanMinimum,
       'updatedAt': dateNow
     });
@@ -107,6 +106,17 @@ class StatsServices {
     String dateNow = ActivityServices.dateNow();
     await productCollection.doc(auth.currentUser.uid).update({
       'minum': stats.minum,
+      'asupanSementara': stats.asupanSementara,
+      'updatedAt': dateNow,
+    });
+
+    return true;
+  }
+
+  static Future<bool> decStats(Stats stats) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+    await productCollection.doc(auth.currentUser.uid).update({
       'asupanSementara': stats.asupanSementara,
       'updatedAt': dateNow,
     });
