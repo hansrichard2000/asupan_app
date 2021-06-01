@@ -7,8 +7,8 @@ class Beranda extends StatefulWidget {
 }
 
 class _BerandaState extends State<Beranda> {
-  int _currentIndex = 0;
-  int _currentdrink = 175;
+  // int _currentIndex = 0;
+  int currentdrink;
   final ctrlAsupan = TextEditingController();
   // dynamic name = AuthServices.getUsersName();
   final log = Logger();
@@ -219,14 +219,6 @@ class _BerandaState extends State<Beranda> {
                     setState(() {
                       isLoading = true;
                     });
-                    Asupans asupans = Asupans(
-                      "",
-                      _currentdrink,
-                      FirebaseAuth.instance.currentUser.uid,
-                      "",
-                      "",
-                      "",
-                    );
                     int asupanLagi;
                     await FirebaseFirestore.instance
                         .collection('stats')
@@ -234,9 +226,17 @@ class _BerandaState extends State<Beranda> {
                         .get()
                         .then((ds) {
                       asupanLagi = ds.data()['asupanSementara'];
-                      _currentIndex = ds.data()['minum'];
+                      currentdrink = ds.data()['minum'];
                     });
-                    int hasil = asupanLagi + _currentdrink;
+                    Asupans asupans = Asupans(
+                      "",
+                      currentdrink,
+                      FirebaseAuth.instance.currentUser.uid,
+                      "",
+                      "",
+                      "",
+                    );
+                    int hasil = asupanLagi + currentdrink;
                     print(hasil);
                     Stats stats = Stats(
                       "",
@@ -244,7 +244,7 @@ class _BerandaState extends State<Beranda> {
                       0,
                       0,
                       0,
-                      _currentdrink,
+                      currentdrink,
                       hasil,
                       0,
                       "",
@@ -407,7 +407,7 @@ class _BerandaState extends State<Beranda> {
                             textButton5 = Color(0xFF0057FF);
                             textButton6 = Color(0xFF0057FF);
                             textButton7 = Color(0xFF0057FF);
-                            _currentdrink = 100;
+                            currentdrink = 100;
                           });
                           Stats stats = Stats(
                             "",
@@ -415,7 +415,7 @@ class _BerandaState extends State<Beranda> {
                             0,
                             0,
                             0,
-                            _currentdrink,
+                            currentdrink,
                             0,
                             0,
                             "",
@@ -459,7 +459,7 @@ class _BerandaState extends State<Beranda> {
                             textButton5 = Color(0xFF0057FF);
                             textButton6 = Color(0xFF0057FF);
                             textButton7 = Color(0xFF0057FF);
-                            _currentdrink = 125;
+                            currentdrink = 125;
                           });
                           Stats stats = Stats(
                             "",
@@ -467,7 +467,7 @@ class _BerandaState extends State<Beranda> {
                             0,
                             0,
                             0,
-                            _currentdrink,
+                            currentdrink,
                             0,
                             0,
                             "",
@@ -511,7 +511,7 @@ class _BerandaState extends State<Beranda> {
                             textButton5 = Color(0xFF0057FF);
                             textButton6 = Color(0xFF0057FF);
                             textButton7 = Color(0xFF0057FF);
-                            _currentdrink = 150;
+                            currentdrink = 150;
                           });
                           Stats stats = Stats(
                             "",
@@ -519,7 +519,7 @@ class _BerandaState extends State<Beranda> {
                             0,
                             0,
                             0,
-                            _currentdrink,
+                            currentdrink,
                             0,
                             0,
                             "",
@@ -571,7 +571,7 @@ class _BerandaState extends State<Beranda> {
                             textButton5 = Color(0xFF0057FF);
                             textButton6 = Color(0xFF0057FF);
                             textButton7 = Color(0xFF0057FF);
-                            _currentdrink = 175;
+                            currentdrink = 175;
                           });
                           Stats stats = Stats(
                             "",
@@ -579,7 +579,7 @@ class _BerandaState extends State<Beranda> {
                             0,
                             0,
                             0,
-                            _currentdrink,
+                            currentdrink,
                             0,
                             0,
                             "",
@@ -623,7 +623,7 @@ class _BerandaState extends State<Beranda> {
                             textButton5 = Colors.white;
                             textButton6 = Color(0xFF0057FF);
                             textButton7 = Color(0xFF0057FF);
-                            _currentdrink = 200;
+                            currentdrink = 200;
                           });
                           Stats stats = Stats(
                             "",
@@ -631,7 +631,7 @@ class _BerandaState extends State<Beranda> {
                             0,
                             0,
                             0,
-                            _currentdrink,
+                            currentdrink,
                             0,
                             0,
                             "",
@@ -675,7 +675,7 @@ class _BerandaState extends State<Beranda> {
                             textButton5 = Color(0xFF0057FF);
                             textButton6 = Colors.white;
                             textButton7 = Color(0xFF0057FF);
-                            _currentdrink = 300;
+                            currentdrink = 300;
                           });
                           Stats stats = Stats(
                             "",
@@ -683,7 +683,7 @@ class _BerandaState extends State<Beranda> {
                             0,
                             0,
                             0,
-                            _currentdrink,
+                            currentdrink,
                             0,
                             0,
                             "",
@@ -734,7 +734,7 @@ class _BerandaState extends State<Beranda> {
                             textButton5 = Color(0xFF0057FF);
                             textButton6 = Color(0xFF0057FF);
                             textButton7 = Colors.white;
-                            _currentdrink = 400;
+                            currentdrink = 400;
                           });
                           Stats stats = Stats(
                             "",
@@ -742,7 +742,7 @@ class _BerandaState extends State<Beranda> {
                             0,
                             0,
                             0,
-                            _currentdrink,
+                            currentdrink,
                             0,
                             0,
                             "",
@@ -865,26 +865,26 @@ class _BerandaState extends State<Beranda> {
                       .then((ds) {
                     asupanLagi = ds.data()['asupanSementara'];
                     minum = ds.data()['minum'].toString();
-                    _currentdrink = int.parse(ctrlAsupan.text);
+                    currentdrink = int.parse(ctrlAsupan.text);
                   });
-                  int hasil = asupanLagi + _currentdrink;
+                  int hasil = asupanLagi + currentdrink;
                   print(hasil);
                   Asupans asupans = Asupans(
                     "",
-                    _currentdrink,
+                    currentdrink,
                     FirebaseAuth.instance.currentUser.uid,
                     "",
                     "",
                     "",
                   );
-                  _currentdrink = int.parse("$minum");
+                  currentdrink = int.parse("$minum");
                   Stats stats = Stats(
                     "",
                     "",
                     0,
                     0,
                     0,
-                    _currentdrink,
+                    currentdrink,
                     hasil,
                     0,
                     "",

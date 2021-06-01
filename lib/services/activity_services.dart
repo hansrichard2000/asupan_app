@@ -15,6 +15,13 @@ class ActivityServices {
     return hasil;
   }
 
+  static String timeToday() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('HH:mm');
+    String hasil = formatter.format(now);
+    return hasil;
+  }
+
   static void showToast(String text, Color mycolor) {
     Fluttertoast.showToast(
       msg: text,

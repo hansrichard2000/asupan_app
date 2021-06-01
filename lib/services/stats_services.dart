@@ -41,6 +41,7 @@ class StatsServices {
       'tinggi': stats.tinggi,
       'usia': stats.usia,
       'minum': stats.minum,
+      'asupanSementara': stats.asupanSementara,
       'asupanMinimum': stats.asupanMinimum,
       'updatedAt': dateNow
     });
