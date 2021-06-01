@@ -208,14 +208,25 @@ class _HarianState extends State<Harian> {
                                 future: _fetchriwayat(),
                                 builder: (BuildContext context,
                                     AsyncSnapshot snapshot) {
-                                  return Text(
-                                    "Anda telah minum sebesar $asupanAkhir ml",
-                                    style: TextStyle(
-                                      fontFamily: 'Sansation',
-                                      fontSize: 20,
-                                      color: Color(0xFF0057FF),
-                                    ),
-                                  );
+                                  if (!snapshot.hasError) {
+                                    return Text(
+                                      "Anda telah minum sebesar $asupanAkhir ml",
+                                      style: TextStyle(
+                                        fontFamily: 'Sansation',
+                                        fontSize: 20,
+                                        color: Color(0xFF0057FF),
+                                      ),
+                                    );
+                                  } else {
+                                    return Text(
+                                      "Tidak ada Data",
+                                      style: TextStyle(
+                                        fontFamily: 'Sansation',
+                                        fontSize: 20,
+                                        color: Color(0xFF0057FF),
+                                      ),
+                                    );
+                                  }
                                 })),
                         buildBody(),
                         isLoading == true
