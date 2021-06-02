@@ -8,6 +8,7 @@ class Beranda extends StatefulWidget {
 
 class _BerandaState extends State<Beranda> {
   // int _currentIndex = 0;
+
   int currentdrink;
   final ctrlAsupan = TextEditingController();
   // dynamic name = AuthServices.getUsersName();
@@ -35,6 +36,7 @@ class _BerandaState extends State<Beranda> {
   String asupanMinimum;
   String tanggalSekarang;
   String dateToday = ActivityServices.dateToday();
+  String dateTodayIndo = ActivityServices.dateTodayIndo();
   String dateNow = ActivityServices.dateNow();
   String uid = FirebaseAuth.instance.currentUser.uid;
   CollectionReference asupanCollection =
@@ -48,7 +50,7 @@ class _BerandaState extends State<Beranda> {
         stream: asupanCollection
             .where('addBy', isEqualTo: uid)
             .where('dateToday', isEqualTo: dateToday)
-            // .orderBy('createdAt', descending: true)
+            .orderBy('updatedAt', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -87,11 +89,17 @@ class _BerandaState extends State<Beranda> {
       appBar: AppBar(
         brightness: Brightness.dark,
 
-        title: FutureBuilder(
-          future: _fetch(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            return Text("Halo, $namePengguna");
-          },
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FutureBuilder(
+              future: _fetch(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return Text("Halo, $namePengguna");
+              },
+            ),
+            Text(dateTodayIndo),
+          ],
         ),
         elevation: 0,
         // backgroundColor: Colors.transparent,

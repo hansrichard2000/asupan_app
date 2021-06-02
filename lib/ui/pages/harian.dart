@@ -58,6 +58,7 @@ class _HarianState extends State<Harian> {
         stream: asupanCollection
             .where('addBy', isEqualTo: uid)
             .where('dateToday', isEqualTo: formatter.format(focusedDay))
+            .orderBy('updatedAt', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {

@@ -15,6 +15,13 @@ class ActivityServices {
     return hasil;
   }
 
+  static String dateTodayIndo() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('dd-MM-yyyy');
+    String hasil = formatter.format(now);
+    return hasil;
+  }
+
   static String timeToday() {
     var now = new DateTime.now();
     var formatter = new DateFormat('HH:mm');

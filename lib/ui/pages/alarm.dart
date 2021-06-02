@@ -11,6 +11,32 @@ class _AlarmState extends State<Alarm> {
   CollectionReference alarmCollection =
       FirebaseFirestore.instance.collection("alarm");
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //     RemoteNotification notification = message.notification;
+  //     AndroidNotification android = message.notification?.android;
+  //     if (notification != null && android != null) {
+  //       flutterLocalNotificationsPlugin.show(
+  //         notification.hashCode,
+  //         notification.title,
+  //         notification.body,
+  //         NotificationDetails(
+  //           android: AndroidNotificationDetails(
+  //             channel.id,
+  //             channel.name,
+  //             channel.description,
+  //             color: Colors.blueAccent[700],
+  //             playSound: true,
+  //             icon: '@mipmap/ic_launcher',
+  //           ),
+  //         ),
+  //       );
+  //     }
+  //   });
+  // }
+
   Widget buildBody() {
     return Container(
       width: double.infinity,
