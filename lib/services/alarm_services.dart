@@ -7,8 +7,9 @@ class AlarmServices {
       FirebaseFirestore.instance.collection("alarm");
   static DocumentReference alarmDocument;
 
-  static Future<bool> addAlarm(Alarms alarms) async {
+  static Future<String> addAlarm(Alarms alarms) async {
     await Firebase.initializeApp();
+    String msg;
     String dateNow = ActivityServices.dateNow();
     alarmDocument = await alarmCollection.add({
       "alarmId": alarms.alarmId,
@@ -18,10 +19,42 @@ class AlarmServices {
       "createdAt": dateNow,
       "updatedAt": dateNow,
     });
-    if (alarmDocument != null) {
-      alarmCollection.doc(alarmDocument.id).update({
-        'asupanid': alarmDocument.id,
-      });
-    }
+    alarmCollection.doc(alarmDocument.id).update({
+      'alarmId': alarmDocument.id,
+    }).then((value) {
+      msg = "success";
+    }).catchError((onError) {
+      msg = onError;
+    });
+    return msg;
+  }
+
+  static Future<String> ubahWaktu(Alarms alarms, String id) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+    String msg;
+
+    await alarmCollection.doc(id).update({
+      'clock': alarms.clock,
+      'updatedAt': dateNow,
+    }).then((value) {
+      msg = "success";
+    }).catchError((onError) {
+      msg = onError;
+    });
+
+    return msg;
+  }
+
+  static Future<bool> deleteAlarm(String id) async {
+    bool hsl = true;
+    await Firebase.initializeApp();
+    await alarmCollection.doc(id).delete().then((value) {
+      hsl = true;
+    }).catchError((onError) {
+      hsl = false;
+    });
+
+    return hsl;
   }
 }

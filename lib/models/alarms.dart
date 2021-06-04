@@ -4,7 +4,7 @@ class Alarms extends Equatable {
   final String alarmId;
   final String clock;
   final String addBy;
-  final String isOn;
+  final bool isOn;
   final String createdAt;
   final String updatedAt;
 

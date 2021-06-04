@@ -7,42 +7,102 @@ class Alarm extends StatefulWidget {
 }
 
 class _AlarmState extends State<Alarm> {
+  int _counter = 0;
+  String name;
+  String test = "22:16";
+  String timeNow = ActivityServices.timeToday();
+  TimeOfDay time;
+  TimeOfDay picked;
+  String waktuAlarm;
+  bool isLoading;
   String uid = FirebaseAuth.instance.currentUser.uid;
   CollectionReference alarmCollection =
       FirebaseFirestore.instance.collection("alarm");
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  //     RemoteNotification notification = message.notification;
-  //     AndroidNotification android = message.notification?.android;
-  //     if (notification != null && android != null) {
-  //       flutterLocalNotificationsPlugin.show(
-  //         notification.hashCode,
-  //         notification.title,
-  //         notification.body,
-  //         NotificationDetails(
-  //           android: AndroidNotificationDetails(
-  //             channel.id,
-  //             channel.name,
-  //             channel.description,
-  //             color: Colors.blueAccent[700],
-  //             playSound: true,
-  //             icon: '@mipmap/ic_launcher',
-  //           ),
-  //         ),
-  //       );
-  //     }
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    time = TimeOfDay.now();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channel.description,
+              color: Colors.blueAccent[700],
+              playSound: true,
+              icon: '@mipmap/ic_launcher',
+            ),
+          ),
+        );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(notification.body),
+                    ],
+                  ),
+                ),
+              );
+            });
+      }
+    });
+  }
+
+  showNotification() async {
+    final pengguna = await FirebaseAuth.instance.currentUser.uid;
+    if (pengguna != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(pengguna)
+          .get()
+          .then((ds) {
+        name = ds.data()['name'];
+        print(name);
+      });
+    }
+    flutterLocalNotificationsPlugin.show(
+        0,
+        "Hai $name",
+        "Saatnya minum air",
+        NotificationDetails(
+            android: AndroidNotificationDetails(
+                channel.id, channel.name, channel.description,
+                importance: Importance.high,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher')));
+  }
 
   Widget buildBody() {
     return Container(
       width: double.infinity,
       height: double.infinity,
       child: StreamBuilder<QuerySnapshot>(
-        stream: alarmCollection.where('addBy', isEqualTo: uid).snapshots(),
+        stream: alarmCollection
+            .where('addBy', isEqualTo: uid)
+            .orderBy('clock', descending: false)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Failed to load data!");
@@ -62,6 +122,10 @@ class _AlarmState extends State<Alarm> {
                 doc.data()['createdAt'],
                 doc.data()['updatedAt'],
               );
+              print(alarms.clock);
+              if (alarms.clock == timeNow && alarms.isOn == true) {
+                showNotification();
+              }
               return AlarmList(
                 alarms: alarms,
               );
@@ -70,6 +134,19 @@ class _AlarmState extends State<Alarm> {
         },
       ),
     );
+  }
+
+  Future<String> selectTime(BuildContext context) async {
+    picked = await showTimePicker(context: context, initialTime: time);
+    String waktu = "${time.hour}:${time.minute}";
+    if (picked != null) {
+      setState(() {
+        time = picked;
+        waktu = "${time.hour}:${time.minute}";
+      });
+    }
+    print(waktu);
+    return waktu;
   }
 
   @override
@@ -115,11 +192,44 @@ class _AlarmState extends State<Alarm> {
                 margin: EdgeInsets.only(bottom: 20),
                 alignment: Alignment.bottomCenter,
                 child: FloatingActionButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    // showNotification();
+                    setState(() {
+                      isLoading = true;
+                    });
+                    waktuAlarm = await selectTime(context);
+                    print(waktuAlarm);
+                    Alarms alarms = Alarms(
+                      "",
+                      waktuAlarm,
+                      "",
+                      true,
+                      "",
+                      "",
+                    );
+                    String msg = await AlarmServices.addAlarm(alarms);
+                    print(msg);
+                    if (msg == "success") {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      // Navigator.of(context).pop();
+                      ActivityServices.showToast(
+                          "Waktu berhasil disimpan", Colors.blueAccent[700]);
+                    } else {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      // Navigator.of(context).pop();
+                      ActivityServices.showToast(
+                          "Waktu berhasil disimpan", Colors.blueAccent[700]);
+                    }
+                  },
                   child: Icon(Icons.add),
                   backgroundColor: Color(0xFF0057FF),
                 ),
               ),
+              isLoading == true ? ActivityServices.loadings() : Container()
             ],
           ),
         ));
