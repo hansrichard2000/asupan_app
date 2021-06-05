@@ -392,7 +392,7 @@ class _BerandaState extends State<Beranda> {
               ),
               padding: EdgeInsets.all(15),
               width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.width / 1.7,
+              height: MediaQuery.of(context).size.width / 1.5,
               child: Column(
                 children: <Widget>[
                   Row(

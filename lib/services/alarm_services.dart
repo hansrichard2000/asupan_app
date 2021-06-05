@@ -46,6 +46,18 @@ class AlarmServices {
     return msg;
   }
 
+  static Future<bool> ubahStatus(Alarms alarms, String id) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+
+    await alarmCollection.doc(id).update({
+      'isOn': alarms.isOn,
+      'updatedAt': dateNow,
+    });
+
+    return true;
+  }
+
   static Future<bool> deleteAlarm(String id) async {
     bool hsl = true;
     await Firebase.initializeApp();

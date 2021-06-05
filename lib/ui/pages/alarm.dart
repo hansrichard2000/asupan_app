@@ -91,7 +91,7 @@ class _AlarmState extends State<Alarm> {
                 importance: Importance.high,
                 color: Colors.blue,
                 playSound: true,
-                icon: '@mipmap/ic_launcher')));
+                icon: '@mipmap/ic_asupan_round')));
   }
 
   Widget buildBody() {
