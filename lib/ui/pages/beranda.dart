@@ -928,7 +928,7 @@ class _BerandaState extends State<Beranda> {
                     }
                   });
 
-                  Navigator.pushReplacementNamed(context, MainMenu.routeName);
+                  Navigator.of(context).pop();
                 },
                 icon: Icon(Icons.save),
                 label: Text("Save"),

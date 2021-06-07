@@ -254,10 +254,7 @@ class _UpdateProfilState extends State<UpdateProfil> {
                                                 "Berhasil Disimpan",
                                                 Colors.green));
                                     isLoading = false;
-                                    Navigator.pushReplacementNamed(
-                                      context,
-                                      MainMenu.routeName,
-                                    );
+                                    Navigator.of(context).pop();
                                   } else {
                                     Fluttertoast.showToast(
                                         msg: "Masih ada data yang kosong!");

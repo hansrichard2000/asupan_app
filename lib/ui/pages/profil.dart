@@ -75,22 +75,32 @@ class _ProfilState extends State<Profil> {
                         },
                         child: SizedBox(
                           child: Semantics(
-                              child: Stack(
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                child: Icon(Icons.person, size: 56),
-                              ),
-                              Center(
-                                child: FutureBuilder(
-                                  future: _fetchimage(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot snapshot) {
-                                    return Image.network("$fotoPengguna");
-                                  },
-                                ),
-                              ),
-                            ],
+                              child: Center(
+                            child: FutureBuilder(
+                              future: _fetchimage(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (fotoPengguna == null) {
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    child: Icon(Icons.person, size: 56),
+                                  );
+                                } else {
+                                  return Image.network(
+                                    "$fotoPengguna",
+                                    width: 100,
+                                  );
+                                }
+                                // try {
+                                //   return Image.network("$fotoPengguna");
+                                // } catch (e) {
+                                //   return Container(
+                                //     alignment: Alignment.center,
+                                //     child: Icon(Icons.person, size: 56),
+                                //   );
+                                // }
+                              },
+                            ),
                           )),
                           width: size.width / 4.5,
                           height: size.height / 7.5,
